@@ -24,14 +24,14 @@ library(stocks)
 ```
 2. Cripto Activos
 ```{r}
-getSymbols("BTC-USD", from = "2017-01-01", to = "2022-02-20")
-getSymbols("ETH-USD", from = "2017-01-01", to = "2022-02-20")
-getSymbols("USDC-USD", from = "2017-01-01", to = "2022-02-20")
-getSymbols("USDT-USD", from = "2017-01-01", to = "2022-02-20")
-getSymbols("ADA-USD", from = "2017-01-01", to = "2022-02-20")
-getSymbols("BNB-USD", from = "2017-01-01", to = "2022-02-20")
-getSymbols("XRP-USD", from = "2017-01-01", to = "2022-02-20")
-getSymbols("HEX-USD", from = "2017-01-01", to = "2022-02-20")
+getSymbols("BTC-USD", from = "2017-03-01", to = "2022-02-20")
+getSymbols("ETH-USD", from = "2017-03-01", to = "2022-02-20")
+getSymbols("USDC-USD", from = "2017-03-01", to = "2022-02-20")
+getSymbols("USDT-USD", from = "2017-03-01", to = "2022-02-20")
+getSymbols("ADA-USD", from = "2017-03-01", to = "2022-02-20")
+getSymbols("BNB-USD", from = "2017-03-01", to = "2022-02-20")
+getSymbols("XRP-USD", from = "2017-03-01", to = "2022-02-20")
+getSymbols("HEX-USD", from = "2017-03-01", to = "2022-02-20")
 #------------------------
 btc <- Ad(`BTC-USD`)
 eth <- Ad(`ETH-USD`)
@@ -65,14 +65,15 @@ adf.test(hex)
 ```
 3.2.
 ```{r}
-sfTest(btc)
-sfTest(eth)
-sfTest(usdc)
-sfTest(usdt)
-sfTest(ada)
-sfTest(bnb)
-sfTest(xrp)
-sfTest(hex)
+library(nortest)
+sf.test(btc)
+sf.test(eth)
+sf.test(usdc)
+sf.test(usdt)
+sf.test(ada)
+sf.test(bnb)
+sf.test(xrp)
+sf.test(hex)
 ```
 3.3. Gráfica comparativa de distribuciones
 3.3.1. 
@@ -222,7 +223,7 @@ chart.TimeSeries(scale(Criptomonedas), legend.loc = "topleft")
 ```{r}
 Rendimientos_C <- Return.calculate(Criptomonedas, method = "log")[-1]
 
-chart.CumReturns(Rendimientos_C, from = "2018-01-01", to = "2022-02-20", legend.loc = "topleft")
+chart.CumReturns(Rendimientos_C, from = "2019-01-01", to = "2022-02-20", legend.loc = "topleft")
 ```
 
 ```{r}
@@ -245,30 +246,18 @@ x %>%
   kbl(caption = "Table 1: Media & desviación estandar de los activos", escape = TRUE) %>%
   kable_classic(full_width = FALSE, html_font = "Cambria")
 ```
-```{r}
-mean(Rendimientos_C)
-sd(Rendimientos_C)
-f <- as.data.frame(
-v <- as.data.frame(sd(Rendimientos_C))
-z <- rbind(f,v)
-```
-
-
-
 
 ```{r}
-ggplot(aes(sd, mean), label(""))
-
-g1<- ggplot(mapping = aes(sd,mean,
-                          label=c("IBM","BABA","AMZN","FB","MSFT","LNVGY","TSLA")))+
-  geom_point()+
-  geom_text(hjust=0,vjust=0)+
-  theme_bw()+xlab("Riesgo")+ylab("Retorno")+
-  scale_y_continuous(breaks = seq(0,0.003,by=0.001), limits = c(0,0.003))+
-  scale_x_continuous(breaks = seq(0.015,0.037,by=0.007), limits = c(0.015,0.037))+
-  ggtitle("Trade-off Riesgo-Retorno", subtitle = "7 Activos Riesgosos")+
-  theme_minimal()
-
+#g1<- ggplot(mapping = aes(sd,mean,
+#                          label=c("IBM","BABA","AMZN","FB","MSFT","LNVGY","TSLA")))+
+#  geom_point()+
+#  geom_text(hjust=0,vjust=0)+
+#  theme_bw()+xlab("Riesgo")+ylab("Retorno")+
+#  scale_y_continuous(breaks = seq(0,0.003,by=0.001), limits = c(0,0.003))+
+#  scale_x_continuous(breaks = seq(0.015,0.037,by=0.007), limits = c(0.015,0.037))+
+#  ggtitle("Trade-off Riesgo-Retorno", subtitle = "7 Activos Riesgosos")+
+#  theme_minimal()
+#g1
 ```
 Matriz de covarianza
 ```{r}
