@@ -448,36 +448,135 @@ W = 0.58397, p-value &lt; 2.2e-16</code></pre>
 <p>3.3. Gráfica comparativa de distribuciones 3.3.1.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXVOX2J0YyA8LSBtZWFuKGJ0YylcbnNkTl9idGMgPC0gc2QoYnRjKVxuZ3JpZE5fYnRjIDwtIHNlcSgtLjIwLCAuMjAsIGJ5ID0gLjAwMSlcbmROX2J0YyA8LSBkbm9ybShncmlkTl9idGMsIG11Tl9idGMsIHNkTl9idGMpXG5cbm11Tl9ldGggPC0gbWVhbihldGgpXG5zZE5fZXRoIDwtIHNkKGV0aClcbmdyaWROX2V0aCA8LSBzZXEoLS4yMCwgLjIwLCBieSA9IC4wMDEpXG5kTl9ldGggPC0gZG5vcm0oZ3JpZE5fZXRoLCBtdU5fZXRoLCBzZE5fZXRoKVxuXG5tdU5fdXNkYyA8LSBtZWFuKHVzZGMpXG5zZE5fdXNkYyA8LSBzZCh1c2RjKVxuZ3JpZE5fdXNkYyA8LSBzZXEoLS4yMCwgLjIwLCBieSA9IC4wMDEpXG5kTl91c2RjIDwtIGRub3JtKGdyaWROX3VzZGMsIG11Tl91c2RjLCBzZE5fdXNkYylcblxubXVOX3VzZHQgPC0gbWVhbih1c2R0KVxuc2ROX3VzZHQgPC0gc2QodXNkdClcbmdyaWROX3VzZHQgPC0gc2VxKC0uMjAsIC4yMCwgYnkgPSAuMDAxKVxuZE5fdXNkdCA8LSBkbm9ybShncmlkTl91c2R0LCBtdU5fdXNkdCwgc2ROX3VzZHQpXG5cbm11Tl9hZGEgPC0gbWVhbihhZGEpXG5zZE5fYWRhIDwtIHNkKGFkYSlcbmdyaWROX2FkYSA8LSBzZXEoLS4yMCwgLjIwLCBieSA9IC4wMDEpXG5kTl9hZGEgPC0gZG5vcm0oZ3JpZE5fYWRhLCBtdU5fYWRhLCBzZE5fYWRhKVxuXG5tdU5fYm5iIDwtIG1lYW4oYm5iKVxuc2ROX2JuYiA8LSBzZChibmIpXG5ncmlkTl9ibmIgPC0gc2VxKC0uMjAsIC4yMCwgYnkgPSAuMDAxKVxuZE5fYm5iIDwtIGRub3JtKGdyaWROX2JuYiwgbXVOX2JuYiwgc2ROX2JuYilcblxubXVOX3hycCA8LSBtZWFuKHhycClcbnNkTl94cnAgPC0gc2QoeHJwKVxuZ3JpZE5feHJwIDwtIHNlcSgtLjIwLCAuMjAsIGJ5ID0gLjAwMSlcbmROX3hycCA8LSBkbm9ybShncmlkTl94cnAsIG11Tl94cnAsIHNkTl94cnApXG5cbm11Tl9oZXggPC0gbWVhbihoZXgpXG5zZE5faGV4IDwtIHNkKGhleClcbmdyaWROX2hleCA8LSBzZXEoLS4yMCwgLjIwLCBieSA9IC4wMDEpXG5kTl9oZXggPC0gZG5vcm0oZ3JpZE5faGV4LCBtdU5faGV4LCBzZE5faGV4KVxuYGBgIn0= -->
+<pre class="r"><code>muN_btc &lt;- mean(btc)
+sdN_btc &lt;- sd(btc)
+gridN_btc &lt;- seq(-.20, .20, by = .001)
+dN_btc &lt;- dnorm(gridN_btc, muN_btc, sdN_btc)
+
+muN_eth &lt;- mean(eth)
+sdN_eth &lt;- sd(eth)
+gridN_eth &lt;- seq(-.20, .20, by = .001)
+dN_eth &lt;- dnorm(gridN_eth, muN_eth, sdN_eth)
+
+muN_usdc &lt;- mean(usdc)
+sdN_usdc &lt;- sd(usdc)
+gridN_usdc &lt;- seq(-.20, .20, by = .001)
+dN_usdc &lt;- dnorm(gridN_usdc, muN_usdc, sdN_usdc)
+
+muN_usdt &lt;- mean(usdt)
+sdN_usdt &lt;- sd(usdt)
+gridN_usdt &lt;- seq(-.20, .20, by = .001)
+dN_usdt &lt;- dnorm(gridN_usdt, muN_usdt, sdN_usdt)
+
+muN_ada &lt;- mean(ada)
+sdN_ada &lt;- sd(ada)
+gridN_ada &lt;- seq(-.20, .20, by = .001)
+dN_ada &lt;- dnorm(gridN_ada, muN_ada, sdN_ada)
+
+muN_bnb &lt;- mean(bnb)
+sdN_bnb &lt;- sd(bnb)
+gridN_bnb &lt;- seq(-.20, .20, by = .001)
+dN_bnb &lt;- dnorm(gridN_bnb, muN_bnb, sdN_bnb)
+
+muN_xrp &lt;- mean(xrp)
+sdN_xrp &lt;- sd(xrp)
+gridN_xrp &lt;- seq(-.20, .20, by = .001)
+dN_xrp &lt;- dnorm(gridN_xrp, muN_xrp, sdN_xrp)
+
+muN_hex &lt;- mean(hex)
+sdN_hex &lt;- sd(hex)
+gridN_hex &lt;- seq(-.20, .20, by = .001)
+dN_hex &lt;- dnorm(gridN_hex, muN_hex, sdN_hex)</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>3.3.2. #Teorica NIG ajustada————–</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShNQVNTKVxuXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShNQVNTKVxubGlicmFyeShHZW5lcmFsaXplZEh5cGVyYm9saWMpXG5OSUdfYnRjIDwtIG5pZ0ZpdChidGMpXG5OSUdfZXRoIDwtIG5pZ0ZpdChldGgpXG5OSUdfdXNkYyA8LSBuaWdGaXQodXNkYylcbk5JR191c2R0IDwtIG5pZ0ZpdCh1c2R0KVxuTklHX2FkYSA8LSBuaWdGaXQoYWRhKVxuTklHX2JuYiA8LSBuaWdGaXQoYm5iKVxuTklHX3hycCA8LSBuaWdGaXQoeHJwKVxuTklHX2hleCA8LSBuaWdGaXQoaGV4KVxuYGBgIn0= -->
 <pre class="r"><code>library(MASS)
-</code></pre>
+library(GeneralizedHyperbolic)
+NIG_btc &lt;- nigFit(btc)
+NIG_eth &lt;- nigFit(eth)
+NIG_usdc &lt;- nigFit(usdc)
+NIG_usdt &lt;- nigFit(usdt)
+NIG_ada &lt;- nigFit(ada)
+NIG_bnb &lt;- nigFit(bnb)
+NIG_xrp &lt;- nigFit(xrp)
+NIG_hex &lt;- nigFit(hex)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hpbmcgcGFja2FnZTog4oCYTUFTU+KAmVxuXG5UaGUgZm9sbG93aW5nIG9iamVjdCBpcyBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOmRwbHly4oCZOlxuXG4gICAgc2VsZWN0XG4ifQ== -->
-<pre><code>
-Attaching package: ‘MASS’
-
-The following object is masked from ‘package:dplyr’:
-
-    select</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>3.3.3.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2FncnVwYXIgcGFyYW1ldHJvcyBlbiB1biBvYmpldG9cblBhcmFtZXRyb05JR19idGMgPC0gTklHX2J0Y0BmaXRbW1wicGFyXCJdXVxuXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2FncnVwYXIgcGFyYW1ldHJvcyBlbiB1biBvYmpldG9cblBhcmFtZXRyb05JR19idGMgPC0gTklHX2J0Y0BmaXRbW1wicGFyXCJdXVxuUGFyYW1ldHJvTklHX2J0YyA8LSBkYXRhLmZyYW1lKHQoUGFyYW1ldHJvTklHX2J0YykpXG5yX2J0Yz1kbmlnKGdyaWROX2J0YyxcbiAgICAgICAgICAgIGFscGhhID0gUGFyYW1ldHJvTklHX2J0YyRhbHBoYSwgXG4gICAgICAgICAgICBiZXRhID0gUGFyYW1ldHJvTklHX2J0YyRiZXRhLCBcbiAgICAgICAgICAgIGRlbHRhID0gUGFyYW1ldHJvTklHX2J0YyRkZWx0YSxcbiAgICAgICAgICAgIG11ID0gUGFyYW1ldHJvTklHX2J0YyRtdSlcblxuUGFyYW1ldHJvTklHX2V0aCA8LSBOSUdfZXRoQGZpdFtbXCJwYXJcIl1dXG5QYXJhbWV0cm9OSUdfZXRoIDwtIGRhdGEuZnJhbWUodChQYXJhbWV0cm9OSUdfZXRoKSlcbnJfZXRoPWRuaWcoZ3JpZE5fZXRoLFxuICAgICAgICAgICAgYWxwaGEgPSBQYXJhbWV0cm9OSUdfZXRoJGFscGhhLCBcbiAgICAgICAgICAgIGJldGEgPSBQYXJhbWV0cm9OSUdfZXRoJGJldGEsIFxuICAgICAgICAgICAgZGVsdGEgPSBQYXJhbWV0cm9OSUdfZXRoJGRlbHRhLFxuICAgICAgICAgICAgbXUgPSBQYXJhbWV0cm9OSUdfZXRoJG11KVxuXG5QYXJhbWV0cm9OSUdfdXNkYyA8LSBOSUdfdXNkY0BmaXRbW1wicGFyXCJdXVxuUGFyYW1ldHJvTklHX3VzZGMgPC0gZGF0YS5mcmFtZSh0KFBhcmFtZXRyb05JR191c2RjKSlcbnJfdXNkYz1kbmlnKGdyaWROX3VzZGMsXG4gICAgICAgICAgICBhbHBoYSA9IFBhcmFtZXRyb05JR191c2RjJGFscGhhLCBcbiAgICAgICAgICAgIGJldGEgPSBQYXJhbWV0cm9OSUdfdXNkYyRiZXRhLCBcbiAgICAgICAgICAgIGRlbHRhID0gUGFyYW1ldHJvTklHX3VzZGMkZGVsdGEsXG4gICAgICAgICAgICBtdSA9IFBhcmFtZXRyb05JR191c2RjJG11KVxuXG5QYXJhbWV0cm9OSUdfdXNkdCA8LSBOSUdfdXNkdEBmaXRbW1wicGFyXCJdXVxuUGFyYW1ldHJvTklHX3VzZHQgPC0gZGF0YS5mcmFtZSh0KFBhcmFtZXRyb05JR191c2R0KSlcbnJfdXNkdD1kbmlnKGdyaWROX3VzZHQsXG4gICAgICAgICAgICBhbHBoYSA9IFBhcmFtZXRyb05JR191c2R0JGFscGhhLCBcbiAgICAgICAgICAgIGJldGEgPSBQYXJhbWV0cm9OSUdfdXNkdCRiZXRhLCBcbiAgICAgICAgICAgIGRlbHRhID0gUGFyYW1ldHJvTklHX3VzZHQkZGVsdGEsXG4gICAgICAgICAgICBtdSA9IFBhcmFtZXRyb05JR191c2R0JG11KVxuXG5QYXJhbWV0cm9OSUdfYWRhIDwtIE5JR19hZGFAZml0W1tcInBhclwiXV1cblBhcmFtZXRyb05JR19hZGEgPC0gZGF0YS5mcmFtZSh0KFBhcmFtZXRyb05JR19hZGEpKVxucl9hZGE9ZG5pZyhncmlkTl9hZGEsXG4gICAgICAgICAgICBhbHBoYSA9IFBhcmFtZXRyb05JR19hZGEkYWxwaGEsIFxuICAgICAgICAgICAgYmV0YSA9IFBhcmFtZXRyb05JR19hZGEkYmV0YSwgXG4gICAgICAgICAgICBkZWx0YSA9IFBhcmFtZXRyb05JR19hZGEkZGVsdGEsXG4gICAgICAgICAgICBtdSA9IFBhcmFtZXRyb05JR19hZGEkbXUpXG5cblBhcmFtZXRyb05JR19ibmIgPC0gTklHX2JuYkBmaXRbW1wicGFyXCJdXVxuUGFyYW1ldHJvTklHX2JuYiA8LSBkYXRhLmZyYW1lKHQoUGFyYW1ldHJvTklHX2JuYikpXG5yX2JuYj1kbmlnKGdyaWROX2JuYixcbiAgICAgICAgICAgIGFscGhhID0gUGFyYW1ldHJvTklHX2JuYiRhbHBoYSwgXG4gICAgICAgICAgICBiZXRhID0gUGFyYW1ldHJvTklHX2JuYiRiZXRhLCBcbiAgICAgICAgICAgIGRlbHRhID0gUGFyYW1ldHJvTklHX2JuYiRkZWx0YSxcbiAgICAgICAgICAgIG11ID0gUGFyYW1ldHJvTklHX2JuYiRtdSlcblxuUGFyYW1ldHJvTklHX3hycCA8LSBOSUdfeHJwQGZpdFtbXCJwYXJcIl1dXG5QYXJhbWV0cm9OSUdfeHJwIDwtIGRhdGEuZnJhbWUodChQYXJhbWV0cm9OSUdfeHJwKSlcbnJfeHJwPWRuaWcoZ3JpZE5feHJwLFxuICAgICAgICAgICAgYWxwaGEgPSBQYXJhbWV0cm9OSUdfeHJwJGFscGhhLCBcbiAgICAgICAgICAgIGJldGEgPSBQYXJhbWV0cm9OSUdfeHJwJGJldGEsIFxuICAgICAgICAgICAgZGVsdGEgPSBQYXJhbWV0cm9OSUdfeHJwJGRlbHRhLFxuICAgICAgICAgICAgbXUgPSBQYXJhbWV0cm9OSUdfeHJwJG11KVxuXG5QYXJhbWV0cm9OSUdfaGV4IDwtIE5JR19oZXhAZml0W1tcInBhclwiXV1cblBhcmFtZXRyb05JR19oZXggPC0gZGF0YS5mcmFtZSh0KFBhcmFtZXRyb05JR19oZXgpKVxucl9oZXg9ZG5pZyhncmlkTl9oZXgsXG4gICAgICAgICAgICBhbHBoYSA9IFBhcmFtZXRyb05JR19oZXgkYWxwaGEsIFxuICAgICAgICAgICAgYmV0YSA9IFBhcmFtZXRyb05JR19oZXgkYmV0YSwgXG4gICAgICAgICAgICBkZWx0YSA9IFBhcmFtZXRyb05JR19oZXgkZGVsdGEsXG4gICAgICAgICAgICBtdSA9IFBhcmFtZXRyb05JR19oZXgkbXUpXG5gYGAifQ== -->
 <pre class="r"><code>#agrupar parametros en un objeto
 ParametroNIG_btc &lt;- NIG_btc@fit[[&quot;par&quot;]]
-</code></pre>
+ParametroNIG_btc &lt;- data.frame(t(ParametroNIG_btc))
+r_btc=dnig(gridN_btc,
+            alpha = ParametroNIG_btc$alpha, 
+            beta = ParametroNIG_btc$beta, 
+            delta = ParametroNIG_btc$delta,
+            mu = ParametroNIG_btc$mu)
+
+ParametroNIG_eth &lt;- NIG_eth@fit[[&quot;par&quot;]]
+ParametroNIG_eth &lt;- data.frame(t(ParametroNIG_eth))
+r_eth=dnig(gridN_eth,
+            alpha = ParametroNIG_eth$alpha, 
+            beta = ParametroNIG_eth$beta, 
+            delta = ParametroNIG_eth$delta,
+            mu = ParametroNIG_eth$mu)
+
+ParametroNIG_usdc &lt;- NIG_usdc@fit[[&quot;par&quot;]]
+ParametroNIG_usdc &lt;- data.frame(t(ParametroNIG_usdc))
+r_usdc=dnig(gridN_usdc,
+            alpha = ParametroNIG_usdc$alpha, 
+            beta = ParametroNIG_usdc$beta, 
+            delta = ParametroNIG_usdc$delta,
+            mu = ParametroNIG_usdc$mu)
+
+ParametroNIG_usdt &lt;- NIG_usdt@fit[[&quot;par&quot;]]
+ParametroNIG_usdt &lt;- data.frame(t(ParametroNIG_usdt))
+r_usdt=dnig(gridN_usdt,
+            alpha = ParametroNIG_usdt$alpha, 
+            beta = ParametroNIG_usdt$beta, 
+            delta = ParametroNIG_usdt$delta,
+            mu = ParametroNIG_usdt$mu)
+
+ParametroNIG_ada &lt;- NIG_ada@fit[[&quot;par&quot;]]
+ParametroNIG_ada &lt;- data.frame(t(ParametroNIG_ada))
+r_ada=dnig(gridN_ada,
+            alpha = ParametroNIG_ada$alpha, 
+            beta = ParametroNIG_ada$beta, 
+            delta = ParametroNIG_ada$delta,
+            mu = ParametroNIG_ada$mu)
+
+ParametroNIG_bnb &lt;- NIG_bnb@fit[[&quot;par&quot;]]
+ParametroNIG_bnb &lt;- data.frame(t(ParametroNIG_bnb))
+r_bnb=dnig(gridN_bnb,
+            alpha = ParametroNIG_bnb$alpha, 
+            beta = ParametroNIG_bnb$beta, 
+            delta = ParametroNIG_bnb$delta,
+            mu = ParametroNIG_bnb$mu)
+
+ParametroNIG_xrp &lt;- NIG_xrp@fit[[&quot;par&quot;]]
+ParametroNIG_xrp &lt;- data.frame(t(ParametroNIG_xrp))
+r_xrp=dnig(gridN_xrp,
+            alpha = ParametroNIG_xrp$alpha, 
+            beta = ParametroNIG_xrp$beta, 
+            delta = ParametroNIG_xrp$delta,
+            mu = ParametroNIG_xrp$mu)
+
+ParametroNIG_hex &lt;- NIG_hex@fit[[&quot;par&quot;]]
+ParametroNIG_hex &lt;- data.frame(t(ParametroNIG_hex))
+r_hex=dnig(gridN_hex,
+            alpha = ParametroNIG_hex$alpha, 
+            beta = ParametroNIG_hex$beta, 
+            delta = ParametroNIG_hex$delta,
+            mu = ParametroNIG_hex$mu)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3I6IHRyeWluZyB0byBnZXQgc2xvdCBcImZpdFwiIGZyb20gYW4gb2JqZWN0IChjbGFzcyBcIm5pZ0ZpdFwiKSB0aGF0IGlzIG5vdCBhbiBTNCBvYmplY3QgXG4ifQ== -->
-<pre><code>Error: trying to get slot &quot;fit&quot; from an object (class &quot;nigFit&quot;) that is not an S4 object </code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>3.3. Graficas</p>
