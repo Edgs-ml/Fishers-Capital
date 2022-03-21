@@ -30,11 +30,15 @@ Portafolio_Tradicional <- merge.xts(IPC, CETES,
 w <- c(0.60, 0.40)
 ```
 
+
+
 2. Con la información anterior crear un Portafolio de Inversión Tradicional 60/40 acciones/deuda (ETF) y calcular su rendimiento promedio anual, su VAR con un 95% de probabilidad (diario y anual), su índice Sharpe.
 
 ```{r}
-Rend_tradicional <- Return.calculate(Portafolio_Tradicional, method = "log")[-1]
-RendPortTrad <- Return.portfolio(R = Rend_tradicional, weights = w)
+Rend_tradicional <- Return.calculate(Portafolio_Tradicional,
+                                     method = "log")[-1]
+RendPortTrad <- Return.portfolio(R = Rend_tradicional,
+                                 weights = w)
 view(RendPortTrad)
 chartSeries(Rend_tradicional)
 chartSeries(RendPortTrad)
@@ -43,13 +47,15 @@ cor.plot(Rend_tradicional)
 var_cov <- as.data.frame(var(Rend_tradicional)) 
 Return.cumulative(Rend_tradicional)
 
-RendPortTrad <- Return.portfolio(Rend_tradicional, weights = w )
+
 plot(density(RendPortTrad))
 
 Daily_VaR_Traditional_Portfolio <- VaR(RendPortTrad)*sqrt(1)*1000000
 Yearly_VaR_Traditional_Portfolio <- VaR(RendPortTrad)*sqrt(252)*1000000
 
 charts.PerformanceSummary(RendPortTrad)
+
+table.AnnualizedReturns(RendPortTrad)
 ```
 
 3.Adicionalmente deberá  seleccionar como mínimo  5 acciones de distintos sectores industriales que se encuentran dentro del índice S&P/BMV ESG. Se deberá obtener el valor de los índices bursátiles sectoriales relacionados a cada acción, así como del S&P/BMV IPC. Los datos de los precios y de los índices deberá ser diario de al menos los últimos 3 años.
@@ -70,32 +76,39 @@ EquityAd <- merge.xts(Santander, Volaris, Televisa, FEMSA, Cemex, Genoma, Rotopl
                       join = "inner") #interseccion, solo toma los días donde todos                                            cotizan
 Equity_Rend_log <- Return.calculate(EquityAd, method = "log")[-1] #logN(x2/x1)
 ```
-Gráficas
+Graficas
 ```{r}
-chartSeries(Equity_Rend_log$BSMXB.MX.Adjusted)
 chartSeries(EquityAd)
 cor.plot(Equity_Rend_log)
 var_cov <- as.data.frame(var(Equity_Rend_log))
 ```
 
 3. Portafolio
+3.1. Restricciones del portafolio
 ```{r}
 Specs_Portfolio <- portfolio.spec(Equity) #genera una lista con los objetivos y restricciones
-Specs_Portfolio <- add.constraint(Specs_Portfolio,type = "full_investment")
-Specs_Portfolio <- add.constraint(Specs_Portfolio,type = "box", min = c(0.10), max = c(0.20)) 
-Specs_Portfolio <- add.constraint(Specs_Portfolio, type = "weight >= 10%", name = "Weight")
-Specs_Portfolio <- add.objective(Specs_Portfolio, type = "risk", name = "VaR")
-Specs_Portfolio <- add.objective(Specs_Portfolio,type = "return",name = "mean") #optimizar a Sharp, en este casdo se debe quitar en "risk"
+Specs_Portfolio <- add.constraint(Specs_Portfolio, 
+                                  type = "full_investment")
+Specs_Portfolio <- add.constraint(Specs_Portfolio, 
+                                  type = "box", 
+                                  min = c(0.10),
+                                  max = c(0.20)) 
+Specs_Portfolio <- add.objective(Specs_Portfolio, 
+                                 type = "risk", 
+                                 name = "VaR")
+Specs_Portfolio <- add.objective(Specs_Portfolio,
+                                 type = "return",
+                                 name = "mean") #optimizar a Sharp, en este caso se debe quitar en "risk"
 Specs_Portfolio
 ```
-
+3.2. Optimización del portafolio
 ```{r}
-Optimum_Portfolio <- optimize.portfolio(Equity_Rend_log, Specs_Portfolio) 
+Optimum_Portfolio <- optimize.portfolio(Equity_Rend_log, Specs_Portfolio)
 #en caso de que no converja, usar ", optimize_method = random"
 ```
 
 ```{r}
-chart.Weights(Optimum_Portfolio)
+chart.Weights(Optimum_Portfolio, plot.type = "barplot", legend.loc = NULL)
 ```
 ```{r}
 # nuevo objeto para los rendimientos del port
@@ -103,9 +116,10 @@ RendOptPort <- Return.portfolio(Equity_Rend_log,
                                 extractWeights(Optimum_Portfolio))
 plot(density(RendOptPort))
 
-VaR(RendOptPort)*sqrt(1)*1000000
-
 charts.PerformanceSummary(RendOptPort)
+
+Daily_VaR_2_Portfolio <- VaR(RendOptPort)*sqrt(1)*1000000
+Yearly_VaR_2_Portfolio <- VaR(RendOptPort)*sqrt(252)*1000000
 ```
 
 ```{r}
@@ -135,7 +149,7 @@ Genoma <- Ad(LABB.MX)
 Rotoplas <- Ad(AGUA.MX)
 Kimberly <- Ad(KIMBERA.MX)
 Nemaka <- Ad(NEMAKA.MX)
-Coffee <- Ad(`KC=F`)
+
 Sugar <- Ad(`SB=F`)
 Gold <- Ad(`GC=F`)
 Silver <- Ad(`SI=F`)
@@ -158,12 +172,18 @@ var_cov <- as.data.frame(var(AlternativesReturns))
 
 3. Portafolio
 ```{r}
-Specs_PortfolioAlternatives <- portfolio.spec(Alternatives) #genera una lista con los objetivos y restricciones
+Specs_PortfolioAlternatives <- portfolio.spec(Alternatives)
 Specs_PortfolioAlternatives <- add.constraint(Specs_Portfolio,type = "full_investment")
-Specs_PortfolioAlternatives <- add.constraint(Specs_Portfolio,type = "box", min = c(0.10*.60), max = c(0.20*.60)) 
-Specs_PortfolioAlternatives <- add.constraint(Specs_Portfolio, type = "weight >= 10%", name = "Weight")
-Specs_PortfolioAlternatives <- add.objective(Specs_Portfolio, type = "risk", name = "VaR")
-Specs_PortfolioAlternatives <- add.objective(Specs_Portfolio,type = "return",name = "mean") #optimizar a Sharp, en este casdo se debe quitar en "risk"
+Specs_PortfolioAlternatives <- add.constraint(Specs_Portfolio,type = "box", 
+                                              min = c(0.10*.60), 
+                                              max = c(0.20*.60)) 
+
+Specs_PortfolioAlternatives <- add.objective(Specs_Portfolio, 
+                                             type = "risk", 
+                                             name = "VaR")
+Specs_PortfolioAlternatives <- add.objective(Specs_Portfolio,
+                                             type = "return",
+                                             name = "mean")
 Specs_PortfolioAlternatives
 ```
 
