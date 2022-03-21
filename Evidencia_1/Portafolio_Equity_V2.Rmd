@@ -23,10 +23,11 @@ getSymbols(Tradicional_60_40, from=as.Date("2017-02-05"), to=Sys.Date())
 
 IPC <- Ad(MXX)
 CETES <- Ad(CETETRCISHRS.MX)
-Portafolio_Tradicional <- merge.xts(IPC, CETES, join = "inner")
+na.locf(IPC)
+na.locf(CETES)
+Portafolio_Tradicional <- merge.xts(IPC, CETES,
+                                    join = "inner")
 w <- c(0.60, 0.40)
-
-
 ```
 
 2. Con la información anterior crear un Portafolio de Inversión Tradicional 60/40 acciones/deuda (ETF) y calcular su rendimiento promedio anual, su VAR con un 95% de probabilidad (diario y anual), su índice Sharpe.
@@ -40,6 +41,7 @@ chartSeries(RendPortTrad)
 chartSeries(Portafolio_Tradicional)
 cor.plot(Rend_tradicional)
 var_cov <- as.data.frame(var(Rend_tradicional)) 
+Return.cumulative(Rend_tradicional)
 
 RendPortTrad <- Return.portfolio(Rend_tradicional, weights = w )
 plot(density(RendPortTrad))
@@ -52,7 +54,6 @@ charts.PerformanceSummary(RendPortTrad)
 
 3.Adicionalmente deberá  seleccionar como mínimo  5 acciones de distintos sectores industriales que se encuentran dentro del índice S&P/BMV ESG. Se deberá obtener el valor de los índices bursátiles sectoriales relacionados a cada acción, así como del S&P/BMV IPC. Los datos de los precios y de los índices deberá ser diario de al menos los últimos 3 años.
 ```{r}
-
 Equity <- c("BSMXB.MX", "VOLARA.MX", "TLEVISACPO.MX", "FEMSAUBD.MX", "CEMEXCPO.MX", "LABB.MX", "AGUA.MX", "KIMBERA.MX", "NEMAKA.MX")
 getSymbols(Equity, from=as.Date("2017-02-05"), to=Sys.Date())
 Santander <- Ad(BSMXB.MX)
@@ -64,8 +65,9 @@ Genoma <- Ad(LABB.MX)
 Rotoplas <- Ad(AGUA.MX)
 Kimberly <- Ad(KIMBERA.MX)
 Nemaka <- Ad(NEMAKA.MX)
-EquityAd <- merge.xts(Santander, Volaris, Televisa, FEMSA, Cemex, Genoma, Rotoplas, Kimberly, Nemaka, 
-                       join = "inner") #interseccion, solo toma los días donde todos                                            cotizan
+
+EquityAd <- merge.xts(Santander, Volaris, Televisa, FEMSA, Cemex, Genoma, Rotoplas, Kimberly, Nemaka,
+                      join = "inner") #interseccion, solo toma los días donde todos                                            cotizan
 Equity_Rend_log <- Return.calculate(EquityAd, method = "log")[-1] #logN(x2/x1)
 ```
 Gráficas
@@ -73,7 +75,7 @@ Gráficas
 chartSeries(Equity_Rend_log$BSMXB.MX.Adjusted)
 chartSeries(EquityAd)
 cor.plot(Equity_Rend_log)
-var_cov <- as.data.frame(var(Equity_Rend_log)) 
+var_cov <- as.data.frame(var(Equity_Rend_log))
 ```
 
 3. Portafolio
