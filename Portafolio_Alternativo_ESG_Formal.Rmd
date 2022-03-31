@@ -24,11 +24,24 @@ La tesis de inversión de FISHER's CAPITAL sigue una estrategia *Global Macroeco
 
 -   ¿De donde se genera el crecimeinto economico de Estados Unidos y México?
 -   ¿De su sector primario, secundario o terciario?
--   ¿Es una economia guiada por el gasto de consumidores o por producción industrial, o por exportaciones? ## Producto Interno Bruto ## Estados Unidos (GDP)
+-   ¿Es una economia guiada por el gasto de consumidores o por producción industrial, o por exportaciones? 
 
+## Producto Interno Bruto 
+
+```{r, echo=FALSE}
+library(tidyverse)
+library(psych)
+library(visdat)
+library(readr)
+library(readxl)
+library(quantmod)
+```
+
+### Estados Unidos (GDP)
 ```{r}
 
 ```
+
 
 ### México (PIB)
 
@@ -104,3 +117,12 @@ Outcome lense perspective:
 #  geom_point(col = "Blue", alpha=0.4)
 #  facet_wrap(~Asset + Alternative_Asset_Type)
 ```
+
+# Análisis de Industria
+
+# Analisis de Empresas
+
+
+
+
+
