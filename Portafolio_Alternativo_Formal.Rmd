@@ -1,0 +1,45 @@
+---
+title: "PORTAFOLIO DE ACTIVOS ALTERNATIVOS"
+subtitle: "Tesis de Inversión & Análisis de Activos"
+author: "Edgar Sigfrido Soto Aparicio. FISHERs CAPITAL"
+date: "3/30/2022"
+output: 
+  html_document:
+    doc: TRUE
+    doc_depth: 3
+bibliography: references.bib
+---
+# Perfil del Inversionista
+Servicio asesorado a un perfil de inversionista 4 (todo tipo de productos), en un horizonte de tiempo de *Indicar años/meses*!!.
+
+# Tesis de Inversión
+La tesis de inversión de FISHER's CAPITAL sigue una estrategia *Global Macroeconomica*. Estudiamos indicadores macroeconomicos para entender en general la economia y el mercado. Nos enfocamos en los mercados mas grandes y mas accesibles, como igual los mercados que tenemos cerca.Estados Unidos y México son las economias que analizaremos para determinar los activos del portafolio. Entendiendo la economia, tomaremos una desición de que industrias invertir, con base en las espectativas
+como:
+
+## Análisis Macroeconomico
+De donde se genera el crecimeinto economico de Estados Unidos y México.¿De su sector primario, secundario o terciario?, ¿Es una economia guiada por el gasto de consumidores o por producción industrial, o por exportaciones?
+
+las tasas de interes, 
+Alta inflación en *INPC*, *INPP*, *sentimiento del consumidor*, *FRED*, 
+crecimiento economico. *PIB*, 
+ 
+```{r}
+# facet_grit: Graficar el Adj. Price, y Rendimiento y … de los activos alternativos
+# S&P5 %>%
+#  ggplot(aes(Profit, Adj.Close))+
+#  geom_point()+
+# facet_wrap(~Industry + Country)
+```
+
+
+```{r}
+# scatter plots: 
+# S&P5 %>%
+#  ggplot(aes(Profit, Adj.Close))+
+#  geom_point()+
+# facet_wrap(~Industry + Country)
+```
+
+
+
+

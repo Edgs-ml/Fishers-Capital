@@ -5,7 +5,7 @@ date: "3/15/2022"
 output: html_document
 ---
 1. Librerias
-```{r}
+```{r, include=FALSE}
 library(tidyverse)
 library(quantmod)
 library(PortfolioAnalytics)
@@ -77,9 +77,15 @@ EquityAd <- merge.xts(Santander, Volaris, Televisa, FEMSA, Cemex, Genoma, Rotopl
 Equity_Rend_log <- Return.calculate(EquityAd, method = "log")[-1] #logN(x2/x1)
 ```
 Graficas
-```{r}
+```{r, }
 chartSeries(EquityAd)
+```
+
+```{r, fig.cap='Figure 1', fig.subcap=(a)}
 cor.plot(Equity_Rend_log)
+```
+
+```{r}
 var_cov <- as.data.frame(var(Equity_Rend_log))
 ```
 
@@ -107,7 +113,7 @@ Optimum_Portfolio <- optimize.portfolio(Equity_Rend_log, Specs_Portfolio)
 #en caso de que no converja, usar ", optimize_method = random"
 ```
 
-```{r}
+```{r, echo=FALSE}
 chart.Weights(Optimum_Portfolio, plot.type = "barplot", legend.loc = NULL)
 ```
 ```{r}
