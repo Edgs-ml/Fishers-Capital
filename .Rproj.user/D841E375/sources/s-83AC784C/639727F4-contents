@@ -1,0 +1,400 @@
+---
+title: "Portafolio_1-GFIA"
+output: html_notebook
+---
+1. Librerias
+```{r}
+library(zoo)
+library(xts)
+library(TTR)
+library(IntroCompFinR)
+library(kableExtra)
+library(pacman)
+library(hrbrthemes)
+library(quantmod)
+library(PerformanceAnalytics)
+library(tidyverse)
+library(psych)
+library(forecast)
+library(tseries)
+library(timeSeries)
+library(naniar)
+library(lmtest)
+library(stocks)
+```
+2. Cripto Activos
+```{r}
+getSymbols("BTC-USD", from = "2017-03-01", to = "2022-02-20")
+getSymbols("ETH-USD", from = "2017-03-01", to = "2022-02-20")
+getSymbols("USDC-USD", from = "2017-03-01", to = "2022-02-20")
+getSymbols("USDT-USD", from = "2017-03-01", to = "2022-02-20")
+getSymbols("ADA-USD", from = "2017-03-01", to = "2022-02-20")
+getSymbols("BNB-USD", from = "2017-03-01", to = "2022-02-20")
+getSymbols("XRP-USD", from = "2017-03-01", to = "2022-02-20")
+getSymbols("HEX-USD", from = "2017-03-01", to = "2022-02-20")
+#------------------------
+btc <- Ad(`BTC-USD`)
+eth <- Ad(`ETH-USD`)
+usdc <- Ad(`USDC-USD`)
+usdt <- Ad(`USDT-USD`)
+ada <- Ad(`ADA-USD`)
+bnb <- Ad(`BNB-USD`)
+xrp <- Ad(`XRP-USD`)
+hex <- Ad(`HEX-USD`)
+#------------------------
+btc <- na.locf(btc)
+eth <- na.locf(eth)
+usdc <- na.locf(usdc)
+usdt <- na.locf(usdt)
+ada <- na.locf(ada)
+bnb <- na.locf(bnb)
+xrp <- na.locf(xrp)
+hex <- na.locf(hex)
+```
+3. Pruebas de Series
+3.1. Pruebas de estacionaridad de Cripto activos
+```{r}
+adf.test(btc)
+adf.test(eth)
+adf.test(usdc)
+adf.test(usdt)
+adf.test(ada)
+adf.test(bnb)
+adf.test(xrp)
+adf.test(hex)
+```
+3.2.
+```{r}
+library(nortest)
+sf.test(btc)
+sf.test(eth)
+sf.test(usdc)
+sf.test(usdt)
+sf.test(ada)
+sf.test(bnb)
+sf.test(xrp)
+sf.test(hex)
+```
+3.3. Gráfica comparativa de distribuciones
+3.3.1. 
+```{r}
+muN_btc <- mean(btc)
+sdN_btc <- sd(btc)
+gridN_btc <- seq(-.20, .20, by = .001)
+dN_btc <- dnorm(gridN_btc, muN_btc, sdN_btc)
+
+muN_eth <- mean(eth)
+sdN_eth <- sd(eth)
+gridN_eth <- seq(-.20, .20, by = .001)
+dN_eth <- dnorm(gridN_eth, muN_eth, sdN_eth)
+
+muN_usdc <- mean(usdc)
+sdN_usdc <- sd(usdc)
+gridN_usdc <- seq(-.20, .20, by = .001)
+dN_usdc <- dnorm(gridN_usdc, muN_usdc, sdN_usdc)
+
+muN_usdt <- mean(usdt)
+sdN_usdt <- sd(usdt)
+gridN_usdt <- seq(-.20, .20, by = .001)
+dN_usdt <- dnorm(gridN_usdt, muN_usdt, sdN_usdt)
+
+muN_ada <- mean(ada)
+sdN_ada <- sd(ada)
+gridN_ada <- seq(-.20, .20, by = .001)
+dN_ada <- dnorm(gridN_ada, muN_ada, sdN_ada)
+
+muN_bnb <- mean(bnb)
+sdN_bnb <- sd(bnb)
+gridN_bnb <- seq(-.20, .20, by = .001)
+dN_bnb <- dnorm(gridN_bnb, muN_bnb, sdN_bnb)
+
+muN_xrp <- mean(xrp)
+sdN_xrp <- sd(xrp)
+gridN_xrp <- seq(-.20, .20, by = .001)
+dN_xrp <- dnorm(gridN_xrp, muN_xrp, sdN_xrp)
+
+muN_hex <- mean(hex)
+sdN_hex <- sd(hex)
+gridN_hex <- seq(-.20, .20, by = .001)
+dN_hex <- dnorm(gridN_hex, muN_hex, sdN_hex)
+```
+3.3.2. #Teorica NIG ajustada--------------
+```{r}
+library(MASS)
+library(GeneralizedHyperbolic)
+NIG_btc <- nigFit(btc)
+NIG_eth <- nigFit(eth)
+NIG_usdc <- nigFit(usdc)
+NIG_usdt <- nigFit(usdt)
+NIG_ada <- nigFit(ada)
+NIG_bnb <- nigFit(bnb)
+NIG_xrp <- nigFit(xrp)
+NIG_hex <- nigFit(hex)
+```
+3.3.3.
+```{r}
+#agrupar parametros en un objeto
+ParametroNIG_btc <- NIG_btc@fit[["par"]]
+ParametroNIG_btc <- data.frame(t(ParametroNIG_btc))
+r_btc=dnig(gridN_btc,
+            alpha = ParametroNIG_btc$alpha, 
+            beta = ParametroNIG_btc$beta, 
+            delta = ParametroNIG_btc$delta,
+            mu = ParametroNIG_btc$mu)
+
+ParametroNIG_eth <- NIG_eth@fit[["par"]]
+ParametroNIG_eth <- data.frame(t(ParametroNIG_eth))
+r_eth=dnig(gridN_eth,
+            alpha = ParametroNIG_eth$alpha, 
+            beta = ParametroNIG_eth$beta, 
+            delta = ParametroNIG_eth$delta,
+            mu = ParametroNIG_eth$mu)
+
+ParametroNIG_usdc <- NIG_usdc@fit[["par"]]
+ParametroNIG_usdc <- data.frame(t(ParametroNIG_usdc))
+r_usdc=dnig(gridN_usdc,
+            alpha = ParametroNIG_usdc$alpha, 
+            beta = ParametroNIG_usdc$beta, 
+            delta = ParametroNIG_usdc$delta,
+            mu = ParametroNIG_usdc$mu)
+
+ParametroNIG_usdt <- NIG_usdt@fit[["par"]]
+ParametroNIG_usdt <- data.frame(t(ParametroNIG_usdt))
+r_usdt=dnig(gridN_usdt,
+            alpha = ParametroNIG_usdt$alpha, 
+            beta = ParametroNIG_usdt$beta, 
+            delta = ParametroNIG_usdt$delta,
+            mu = ParametroNIG_usdt$mu)
+
+ParametroNIG_ada <- NIG_ada@fit[["par"]]
+ParametroNIG_ada <- data.frame(t(ParametroNIG_ada))
+r_ada=dnig(gridN_ada,
+            alpha = ParametroNIG_ada$alpha, 
+            beta = ParametroNIG_ada$beta, 
+            delta = ParametroNIG_ada$delta,
+            mu = ParametroNIG_ada$mu)
+
+ParametroNIG_bnb <- NIG_bnb@fit[["par"]]
+ParametroNIG_bnb <- data.frame(t(ParametroNIG_bnb))
+r_bnb=dnig(gridN_bnb,
+            alpha = ParametroNIG_bnb$alpha, 
+            beta = ParametroNIG_bnb$beta, 
+            delta = ParametroNIG_bnb$delta,
+            mu = ParametroNIG_bnb$mu)
+
+ParametroNIG_xrp <- NIG_xrp@fit[["par"]]
+ParametroNIG_xrp <- data.frame(t(ParametroNIG_xrp))
+r_xrp=dnig(gridN_xrp,
+            alpha = ParametroNIG_xrp$alpha, 
+            beta = ParametroNIG_xrp$beta, 
+            delta = ParametroNIG_xrp$delta,
+            mu = ParametroNIG_xrp$mu)
+
+ParametroNIG_hex <- NIG_hex@fit[["par"]]
+ParametroNIG_hex <- data.frame(t(ParametroNIG_hex))
+r_hex=dnig(gridN_hex,
+            alpha = ParametroNIG_hex$alpha, 
+            beta = ParametroNIG_hex$beta, 
+            delta = ParametroNIG_hex$delta,
+            mu = ParametroNIG_hex$mu)
+```
+3.3. Graficas
+```{r}
+plot(x = gridN_btc, y = r_btc,
+     type = "l", label = "Gráfica 1 BTC")
+lines(x=gridN_OMXC, y=dN_OMXC, col="red")
+lines(density(g1$OMXC), col = "green")
+```
+4. Portafolio
+```{r}
+Criptomonedas <- merge.xts(btc,
+                           eth,
+                           usdc,
+                           usdt,
+                           ada,
+                           bnb,
+                           xrp,
+                           hex,
+                           join = "inner")
+cor.plot(Criptomonedas)
+chartSeries(Criptomonedas)
+chart.TimeSeries(scale(Criptomonedas), legend.loc = "topleft")
+```
+```{r}
+Rendimientos_C <- Return.calculate(Criptomonedas, method = "log")[-1]
+
+chart.CumReturns(Rendimientos_C, from = "2019-01-01", to = "2022-02-20", legend.loc = "topleft")
+```
+
+```{r}
+mean <- apply(Return.calculate(Criptomonedas, method = "log")[-1,],
+             2,function(x) mean(x))
+
+sd<- apply(Return.calculate(Criptomonedas, method = "log")[-1,],
+           2,function(x) sd(x))
+
+m<- as.data.frame(mean)
+
+m<- t(m)
+
+s<- t(as.data.frame(sd))
+
+x<- rbind(m,s)*100
+
+x %>%
+  t() %>%
+  kbl(caption = "Table 1: Media & desviación estandar de los activos", escape = TRUE) %>%
+  kable_classic(full_width = FALSE, html_font = "Cambria")
+```
+
+```{r}
+#g1<- ggplot(mapping = aes(sd,mean,
+#                          label=c("IBM","BABA","AMZN","FB","MSFT","LNVGY","TSLA")))+
+#  geom_point()+
+#  geom_text(hjust=0,vjust=0)+
+#  theme_bw()+xlab("Riesgo")+ylab("Retorno")+
+#  scale_y_continuous(breaks = seq(0,0.003,by=0.001), limits = c(0,0.003))+
+#  scale_x_continuous(breaks = seq(0.015,0.037,by=0.007), limits = c(0.015,0.037))+
+#  ggtitle("Trade-off Riesgo-Retorno", subtitle = "7 Activos Riesgosos")+
+#  theme_minimal()
+#g1
+```
+Matriz de covarianza
+```{r}
+cov<-cov(Rendimientos_C)*100
+
+cov %>%
+  round(digits = 4) %>%
+  kbl(caption = "Table 2: Matriz de covarianzas de los activos", escape = TRUE) %>%
+  kable_classic(full_width = FALSE, html_font = "Cambria")
+
+generate_heat_map <- function(correlationMatrix, title)
+{
+  
+  heatmap.2(x = correlationMatrix,    
+            cellnote = correlationMatrix,   
+            main = title,           
+            symm = TRUE,            
+            dendrogram="none",      
+            Rowv = FALSE,           
+            trace="none",           
+            density.info="none",        
+            notecol="black")          
+}
+
+corr1 <- round(cor(Rendimientos_C) * 100, 2)
+
+generate_heat_map(corr1,"Heatmap: Correlaciones")
+
+mean<- apply(Rendimientos_C, 2, function(x) mean(x))
+
+sd<- apply(Rendimientos_C, 2,function(x) sd(x))
+
+cov<- cov(Rendimientos_C)
+```
+
+```{r}
+# Pesos  ------------------------------------------------------------------
+
+weights<- rep(1,8)/8
+
+
+# construimos el portafolio -----------------------------------------------
+
+getPortfolio(mean,cov,weights = 
+               weights)
+
+
+# Portafolio de minima varianza -------------------------------------------
+
+globalmin=globalMin.portfolio(mean,cov,
+                              shorts = F)
+
+
+```
+
+```{r}
+g3<- ggplot()+geom_point(
+  mapping = aes(globalmin$sd,
+                globalmin$er,
+                color="1"),size=4
+)
+g3<- g3+geom_point(mapping = 
+                     aes(sd,mean,color="2"),
+                   size=4)
+
+g3<- g3+ scale_color_manual(
+  "",values = c("blue","purple"),
+  labels=c("Min Var.","Stocks 1")
+)
+g3<- g3+ xlab("Riesgo")+ylab("Retorno")+
+  ggtitle("Trade-off Riesgo-Retorno",
+          subtitle = "Siete Activos riesgos & minima varianza")+
+  theme_minimal()
+g3
+
+data=as.data.frame(round(globalmin$weights*100,2))
+
+for(i in  1:7){
+  if(data[i,1]==0){
+    data[i,1]=NA
+  }
+  else{
+    data[i,1]=data[i,1]
+  }
+}
+
+names(data)=c("Pesos")
+
+data=data.frame("Acciones"=tickers,"Pesos"=data)
+
+data=na.omit(data)
+
+bp<- ggplot(data = data,aes(x="",y=Pesos,fill=Acciones))+
+  geom_bar(width = 1,stat = "identity")
+pie<- bp + coord_polar("y",start=0)
+
+aa<-pie +scale_fill_brewer(palette = "Blues")+
+  ggtitle("Portafolio de minima varianza")
+
+ata<-aa+geom_text(aes(label=percent(data[,2],scale = 1)),
+                  position = position_stack(vjust = 0.4),
+                  color="black")+
+  theme_minimal()
+
+ata + theme(panel.grid.major = element_line(linetype = "longdash"))+
+  theme(plot.title = element_text(family = "Times", 
+                                  hjust = 0.50), 
+        legend.position = "bottom", 
+        legend.direction = "horizontal") +labs(x = "Acciones")
+
+```
+Portafolio de minima varianza sujeto a un retorno objetivo
+```{r}
+port.ibm<- efficient.portfolio(mean,cov,mean[1],shorts = F)
+port.baba<- efficient.portfolio(mean,cov,mean[2],shorts = F)
+port.amzn<- efficient.portfolio(mean,cov,mean[3],shorts = F)
+port.fb<- efficient.portfolio(mean,cov,mean[4],shorts = F)
+port.msft<- efficient.portfolio(mean,cov,mean[5],shorts = F)
+port.lngvgy<- efficient.portfolio(mean,cov,mean[6],shorts = F)
+port.tsla<- efficient.portfolio(mean,cov,mean[7],shorts = F)
+mean.2<- c(port.ibm$er,port.baba$er,port.amzn$er,port.fb$er,port.msft$er,
+           port.lngvgy$er,port.tsla$er)
+sd.2 <- c(port.ibm$sd,port.baba$sd,port.amzn$sd,port.fb$sd,port.msft$sd,
+          port.lngvgy$sd,port.tsla$sd)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
