@@ -1,4 +1,4 @@
-"0","Eq_Specs_Port <- portfolio.spec(c(""BSMXB.MX"", ""VOLARA.MX"", ""TLEVISACPO.MX"", ""FEMSAUBD.MX"", ""CEMEXCPO.MX"", ""LABB.MX"", ""AGUA.MX"", ""KIMBERA.MX"", ""NEMAKA.MX"", ""AMZN"", ""WM"", ""NVS"", ""SAN"", ""BIMBOA.MX"", ""C"", ""NVDA""))"
+"0","Eq_Specs_Port <- portfolio.spec(c(""AMZN"", ""WM"", ""NVS"", ""SAN"", ""BIMBOA.MX"", ""C"", ""NVDA""))"
 "0","##### Add Constraints #####"
 "0","Eq_Specs_Port <- add.constraint(Eq_Specs_Port,"
 "0","                                type=""full_investment"")"
@@ -225,39 +225,29 @@
 Call:
 "
 "1",""
-"1","portfolio.spec(assets = c(""BSMXB.MX"", ""VOLARA.MX"", ""TLEVISACPO.MX"", 
-    ""FEMSAUBD.MX"", ""CEMEXCPO.MX"", ""LABB.MX"", ""AGUA.MX"", ""KIMBERA.MX"", 
-    ""NEMAKA.MX"", ""AMZN"", ""WM"", ""NVS"", ""SAN"", ""BIMBOA.MX"", ""C"", 
-    ""NVDA""))"
+"1","portfolio.spec(assets = c(""AMZN"", ""WM"", ""NVS"", ""SAN"", ""BIMBOA.MX"", 
+    ""C"", ""NVDA""))"
 "1",""
 "1","
 
 "
 "1","Number of assets:"
 "1"," "
-"1","16"
+"1","7"
 "1"," "
 "1","
 "
 "1","Asset Names
 "
-"1"," [1]"
-"1"," ""BSMXB.MX""     "
-"1"," ""VOLARA.MX""    "
-"1"," ""TLEVISACPO.MX"""
-"1"," ""FEMSAUBD.MX""  "
-"1"," ""CEMEXCPO.MX""  "
+"1","[1]"
+"1"," ""AMZN""     "
+"1"," ""WM""       "
+"1"," ""NVS""      "
+"1"," ""SAN""      "
+"1"," ""BIMBOA.MX"""
+"1"," ""C""        "
+"1"," ""NVDA""     "
 "1","
-"
-"1"," [6]"
-"1"," ""LABB.MX""      "
-"1"," ""AGUA.MX""      "
-"1"," ""KIMBERA.MX""   "
-"1"," ""NEMAKA.MX""    "
-"1"," ""AMZN""         "
-"1","
-"
-"1","More than 10 assets, only printing the first 10
 "
 "1","
 Constraints
