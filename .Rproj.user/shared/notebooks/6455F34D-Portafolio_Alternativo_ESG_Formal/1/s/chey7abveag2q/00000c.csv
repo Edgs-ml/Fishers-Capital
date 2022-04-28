@@ -1,0 +1,8 @@
+"0","EquityKC.F_Returns <- dta_frm_Equity_Returns %>%
+  mutate(Coffe_return=dta_frm_Commodities_Returns$KC.F.Adjusted)
+"
+"2","Error: Problem with `mutate()` column `Coffe_return`.
+[34mℹ[39m `Coffe_return = dta_frm_Commodities_Returns$KC.F.Adjusted`.
+[34mℹ[39m `Coffe_return` must be size 1278 or 1, not 1316.
+[90mRun `rlang::last_error()` to see where the error occurred.[39m
+"
