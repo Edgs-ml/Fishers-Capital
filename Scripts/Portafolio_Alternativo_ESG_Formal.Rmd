@@ -38,7 +38,6 @@ La tesis de inversión de FISHER's CAPITAL sigue una estrategia *Global Macroeco
 
 ## Producto Interno Bruto 
 ```{r, include=FALSE}
-library(tidyverse)
 library(psych)
 library(visdat)
 library(readr)
