@@ -18,6 +18,7 @@ library(readr)
 library(psych)
 library(DEoptim)
 library(visdat)
+library(ghyp)
 ```
 # Perfil del Inversionista
 
@@ -25,18 +26,17 @@ Servicio asesorado a un perfil de inversionista 4 (todo tipo de productos), en u
 
 # Tesis de Inversión
 
-Lo mas importante en la gestión de activos es garantizar flujos de efectivo constantes y estables, igual como reducir el riesgo del portafolio a travez de la diversificación. 2022 no es ni como 2021, con gran crecimiento en los mercados de capitales o como 2020 que beneficio el mercado de deuda. Los activos alternativos nos ayudan a cumplir este objetivo de tener retornos constantes y estables en el panorama macroeconomico de hoy en día de crecimiento economico moderado, alta inflaciión y constantes subidas de tasas de interes.
+Lo más importante en la gestión de activos es garantizar flujos de efectivo constantes y estables, igual como reducir el riesgo del portafolio a través de la diversificación. 2022 no es ni como 2021, con gran crecimiento en los mercados de capitales o cómo 2020 que beneficio el mercado de deuda. Los activos alternativos nos ayudan a cumplir este objetivo de tener retornos constantes y estables en el panorama macroeconómico de hoy en día de crecimiento económico moderado, alta inflación y constantes subidas de tasas de interés.
 
-La tesis de inversión de FISHER's CAPITAL sigue una estrategia *Global Macroeconomica*. Estudiamos indicadores macroeconomicos para entender en general la economia y el mercado. Nos enfocamos en los mercados mas grandes y mas accesibles, como igual los mercados que tenemos cerca.Estados Unidos y México son las economias que analizaremos para determinar los activos del portafolio. Entendiendo la economia, tomaremos una desición de que industrias invertir. A partir de la selección de industrias, compararemos los multiplos de las empresas para seleccionar los activos adecuados. Mezclamos nuestra selección de empresas con deuda gubernamental y corporativa, y posteriormente con activos alternativos para diversificar.
+La tesis de inversión de FISHER's CAPITAL sigue una estrategia *Global Macroeconómica*. Estudiamos indicadores macroeconómicos para entender en general la economía y el mercado. Nos enfocamos en los mercados más grandes y más accesibles, como igual los mercados que tenemos cerca. Estados Unidos y México son las economías que analizaremos para determinar los activos del portafolio. Entendiendo la economía, tomaremos una decisión de qué industrias invertir. A partir de la selección de industrias, compararemos los múltiplos de las empresas para seleccionar los activos adecuados. Mezclamos nuestra selección de empresas con deuda gubernamental y corporativa, y posteriormente con activos alternativos para diversificar.
 
 # Análisis Macroeconomico
 
--   ¿De donde se genera el crecimeinto economico de Estados Unidos y México?
+-   ¿De donde se genera el crecimiento económico de Estados Unidos y México?
 -   ¿De su sector primario, secundario o terciario?
--   ¿Es una economia guiada por el gasto de consumidores o por producción industrial, o por exportaciones? 
+-   ¿Es una economía guiada por el gasto de consumidores o por producción industrial, o por exportaciones?
 
 ## Producto Interno Bruto 
-
 ```{r, include=FALSE}
 library(tidyverse)
 library(psych)
@@ -59,8 +59,7 @@ library(quantmod)
 ## Inflación
 
 ### Estados Unidos (CPI)
-
-```{r}
+```{r, include=FALSE}
 
 ```
 
@@ -72,24 +71,25 @@ library(quantmod)
 ## Tasas de Interes
 
 ### Estados Unidos
-
 ```{r}
 
 ```
 
 ### Méxcio
-
 ```{r}
 
 ```
 
 # Activos Alternativos
+## ¿Cómo decidir que alternativos incluir?
+De acuerdo con David Kelly, especialista en *Global Market Insight Strategy* de J.P. Morgan, los alternativos son activos que se deben de agregar al portafolio con un proposito en mente. ¿Cuál es el desafio del portafolio? Si nuuestro objetivo es maximizar *Rate of Return*, incluir **Hedge Funds* no sea la mejor idea, en cambi incluir *Private Equity* sería un mejor camino. 
+Para el portafolio del Banco Interamericano de Desarrollo se bus
 
 Agrupar nuestras Convicciones de Manejo de Activos en distintas perspectivas
 
 ## Atributos que estamos buscando en 2022
 
--   Los mercados de capitales son volatiles.
+-   Los mercados de capitales son volátiles.
 -   "We like fundamental driven returns, rather than those from technical factors"
 -   Floating rate, shorter maturity assets
 -   poritive real yields Integration
@@ -130,30 +130,100 @@ Outcome lense perspective:
 # Valuación de Instrumentos Tradicionales de Renta Variable
 # Portafolio Tradicional
 
-```{r}
-Equity <- c("BSMXB.MX", "VOLARA.MX", "TLEVISACPO.MX", "FEMSAUBD.MX", "CEMEXCPO.MX", "LABB.MX", "AGUA.MX", "KIMBERA.MX", "NEMAKA.MX")
+```{r, include=FALSE}
+Equity <- c("BSMXB.MX", "VOLARA.MX", "TLEVISACPO.MX", "FEMSAUBD.MX", "CEMEXCPO.MX", "LABB.MX", "AGUA.MX", "KIMBERA.MX", "NEMAKA.MX", "AMZN", "WM", "NVS", "SAN", "BIMBOA.MX", "C", "NVDA")
 getSymbols(Equity, from=as.Date("2017-02-05"), to=Sys.Date())
-Santander <- Ad(BSMXB.MX)
-Volaris <- Ad(VOLARA.MX)
-Televisa <- Ad(TLEVISACPO.MX)
-FEMSA <- Ad(FEMSAUBD.MX)
-Cemex <- Ad(CEMEXCPO.MX)
-Genoma <- Ad(LABB.MX)
-Rotoplas <- Ad(AGUA.MX)
-Kimberly <- Ad(KIMBERA.MX)
-Nemaka <- Ad(NEMAKA.MX)
 
-EquityAd <- merge.xts(Santander, Volaris, Televisa, FEMSA, Cemex, Genoma, Rotoplas, Kimberly, Nemaka,
-                      join = "inner") #interseccion, solo toma los días donde todos                                            cotizan
-Equity_Rend_log <- Return.calculate(EquityAd, method = "log")[-1] #logN(x2/x1)
+Equity_ad <- NULL
+for(i in Equity){
+  assign(paste0("Ad_",i), Ad(get(i)))
+  Equity_ad <- c(Equity_ad, paste0("Ad_",i))
+}
+
+Equity_Portfolio <- merge.xts(get(Equity_ad[1]),
+                       get(Equity_ad[2]),
+                       join = "inner")
+
+for(i in 3:length(Equity_ad)){
+  Equity_Portfolio <- merge.xts(Equity_Portfolio,
+                         get(Equity_ad[i]),
+                         join = "inner")
+}
+Equity_Returns <- Return.calculate(Equity_Portfolio)[-1,]
 ```
+Portafolio acciones
+```{r, echo=FALSE}
+Eq_Specs_Port <- portfolio.spec(c("BSMXB.MX", "VOLARA.MX", "TLEVISACPO.MX", "FEMSAUBD.MX", "CEMEXCPO.MX", "LABB.MX", "AGUA.MX", "KIMBERA.MX", "NEMAKA.MX", "AMZN", "WM", "NVS", "SAN", "BIMBOA.MX", "C", "NVDA"))
+##### Add Constraints #####
+Eq_Specs_Port <- add.constraint(Eq_Specs_Port,
+                                type="full_investment")
+Eq_Specs_Port <- add.constraint(Eq_Specs_Port,
+                                type="long_only")
+
+##### Add Objective #####
+Eq_Specs_Port <- add.objective(Eq_Specs_Port,
+                               type="risk",
+                               name="StdDev")
+Eq_Specs_Port <- add.objective(Eq_Specs_Port,
+                               type='return',
+                               name='mean')
+Eq_Specs_Port
+```
+Optimización NIG para Eq_Specs_Port
+```{r}
+covnig<-function(R,portfolio){
+  a<-fit.NIGmv(R,silent=TRUE)
+  COV<-a@variance
+  mu<-a@expected.value
+  mu<-matrix(mu,ncol = 1)
+  resultado<-list(mu=mu,sigma=COV)
+  return(resultado)
+}
+
+Optimized_Port_NIG <- optimize.portfolio(Equity_Rend_log,
+                                         Eq_Specs_Port,
+                                         momentFUN = covnig,
+                                         optimize_method = "random",
+                                         trace = TRUE)
+```
+
+```{r}
+chart.Weights(Optimized_Port_NIG, plot.type = "barplot")
+W_R_NIG <- extractWeights(Optimized_Port_NIG)
+W_R_NIG
+```
+```{r}
+sum(W_R_NIG)
+```
+```{r}
+Return_Port_NIG <- Return.portfolio(Equity_Rend_log, W_R_NIG)
+plot(cumsum(Return_Port_NIG))
+```
+
+```{r, echo=FALSE}
+table.AnnualizedReturns(Return_Port_NIG,
+                        scale = 252,
+                        geometric = FALSE)
+```
+```{r, echo=FALSE}
+Return.cumulative(Return_Port_NIG,
+                  geometric = FALSE)
+```
+```{r, echo=FALSE}
+chart.RiskReward(Optimized_Port_NIG,
+                 risk.col = 'StdDev',
+                 return.col = 'mean',
+                 chart.assets = TRUE)
+
+```
+
 
 -----------------------------
 # Valuación de Commodities
 
-```{r}
+```{r, include=FALSE}
 Commodities <- c("KC=F", "SB=F", "GC=F", "SI=F", "ZW=F")
-getSymbols(Commodities)
+getSymbols(Commodities, from=as.Date("2017-02-05"), to=Sys.Date())
 
 Commodities_ad <- NULL
 for(i in Commodities){
@@ -174,28 +244,32 @@ Commodities_Returns <- Return.calculate(Commodities_Portfolio)[-1,]
 ```
 Precios Ajustados de Portafolio Commodities
 ```{r}
-tiempo <- c("2015", "2016", "2017", "2018", "2019", "2020", "2021")
-eje <- c(1:7)
-
-Plot <- Commodities_Portfolio
-ggplot() %>%
-  geom_line(aes(x=eje, y=Commodities_Portfolio))
-
-Commodities_Portfolio <- as.data.frame(Commodities_Portfolio) 
-Commodities_Portfolio <- tibble::rownames_to_column(Commodities_Portfolio, "DATE")
-head(Commodities_Portfolio)
-
+dta_fram_commodities <- as.data.frame(Commodities_Portfolio)
+dta_fram_commodities <- dta_fram_commodities %>%
+  mutate(fecha=index(Commodities_Portfolio))
+dta_fram_commodities_tidy <- dta_fram_commodities %>%
+  gather(-fecha, value = Rendimiento, key=Activo_comm)
+dta_fram_commodities_tidy %>%
+  ggplot(aes(x=fecha, y=Rendimiento, col=Activo_comm))+
+  geom_line()+
+  scale_y_log10()
+```
+```{r}
+dta_fram_commodities_tidy %>%
+  ggplot(aes(x=fecha, y=Rendimiento, col=Activo_comm))+
+  geom_line()+
+  facet_wrap(.~Activo_comm, scales = "free")
 ```
 
-```{r, echo=FALSE}
 ####
+```{r, echo=FALSE}
 Alternatives_Portfolio %>%
   ggplot(aes(KC.F.Adjusted))+
   geom_density()
 ```
 Retornos de Portafolio Alternativo
-```{r, echo=FALSE}
 ####
+```{r, echo=FALSE}
 Alternative_Returns %>%
   ggplot(aes(KC.F.Adjusted))+
   geom_density()
@@ -203,7 +277,7 @@ Alternative_Returns %>%
 
 ## Correlación entre Commodities y el Portafolio Tradicional
 ```{r}
-Gold_correlation <- rollapply(data = Alternative_Returns, 
+Gold_correlation <- rollapply(data = Commodities_Returns, 
                               width = 253, 
                               function(x) cor(x[,4], x[,7]), 
                               by.column = F)
@@ -218,6 +292,29 @@ mean(na.omit(Gold_correlation))
 ```{r}
 Fibras <- c("FMTY14.MX", "FUNO11.MX", "FIBRAPL14.MX", "FIBRAMQ12.MX")
 getSymbols(Fibras)
+
+Fibras_ad <- NULL
+for(i in Fibras){
+  assign(paste0("Ad_",i), Ad(get(i)))
+  Commodities_ad <- c(Commodities_ad, paste0("Ad_",i))
+}
+
+Commodities_Portfolio <- merge.xts(get(Commodities_ad[1]),
+                       get(Commodities_ad[2]),
+                       join = "inner")
+
+for(i in 3:length(Commodities_ad)){
+  Commodities_Portfolio <- merge.xts(Commodities_Portfolio,
+                         get(Commodities_ad[i]),
+                         join = "inner")
+}
+Commodities_Returns <- Return.calculate(Commodities_Portfolio)[-1,]
+```
+```{r}
+dta_fram_commodities_tidy %>%
+  ggplot(aes(x=fecha, y=Rendimiento, col=Activo_comm))+
+  geom_line()+
+  facet_wrap(.~Activo_comm, scales = "free")
 ```
 
 ---------------------------------
