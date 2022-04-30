@@ -1,12 +1,10 @@
-import pandas as pd # PANEL DATA ANALYSIS
-import seaborn as sns # Plottear cosas bonitas
-import matplotlib.pyplot as plt #Ploter tmbn cosas bonitas
-import pandas as pd
-url='https://risk.edhec.edu/sites/risk/files/indices/Indices/Edhec%20Alternative%20Indices/Web/table/history.csv'
-data=pd.read_csv(url, delimiter=';', index_col=0, parse_dates=True)
-import pandas as pd # PANEL DATA ANALYSIS
-pip instal pandas
-pip install pandas
+py_install("pandas")
 pip install pandas-datareader
 ` shell pip install pandas-datareader `
-py_install("pandas")
+import pandas as pd # PANEL DATA ANALYSIS
+import seaborn as sns # Plottear cosas bonitas 
+import matplotlib.pyplot as plt #Ploter tmbn cosas bonitas
+
+
+url='https://risk.edhec.edu/sites/risk/files/indices/Indices/Edhec%20Alternative%20Indices/Web/table/history.csv'
+data=pd.read_csv(url, delimiter=';', index_col=0, parse_dates=True)
