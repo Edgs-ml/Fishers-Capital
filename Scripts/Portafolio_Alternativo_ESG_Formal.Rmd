@@ -19,6 +19,7 @@ library(psych)
 library(DEoptim)
 library(visdat)
 library(ghyp)
+library(readxl)
 ```
 # Perfil del Inversionista
 
@@ -37,14 +38,6 @@ La tesis de inversión de FISHER's CAPITAL sigue una estrategia *Global Macroeco
 -   ¿Es una economía guiada por el gasto de consumidores o por producción industrial, o por exportaciones?
 
 ## Producto Interno Bruto 
-```{r, include=FALSE}
-library(psych)
-library(visdat)
-library(readr)
-library(readxl)
-library(quantmod)
-```
-
 ### Estados Unidos (GDP)
 ```{r, echo=FALSE}
 
@@ -101,14 +94,6 @@ Agrupar nuestras Convicciones de Manejo de Activos en distintas perspectivas
 Outcome lense perspective:
 
 ```{r}
-# facet_grit: Graficar el Adj. Price, y Rendimiento y … de los activos alternativos
-#S&P5 %>%
-#  ggplot(aes(Profit, Adj.Close))+
-#  geom_point()+
-#  facet_wrap(~Industry + Country)
-```
-
-```{r}
 # scatter plots: 
 #S&P5 %>%
 #  ggplot(aes(Profit, Adj.Close))+
@@ -150,6 +135,45 @@ for(i in 3:length(Equity_ad)){
 }
 Equity_Returns <- Return.calculate(Equity_Portfolio)[-1,]
 ```
+
+```{r, include=FALSE}
+Equity_Ad <- cbind(Ad_AMZN, Ad_BIMBOA.MX, Ad_C, Ad_NVDA, Ad_NVS, Ad_SAN, Ad_WM)
+Equity_Ad <- Equity_Ad %>%
+  na.omit()
+Equity_Ad <- Equity_Ad[-1,]
+dta_frm_Equity_Ad <- as.data.frame(Equity_Ad)
+
+dta_frm_Equity_Ad %>% 
+  setnames(old = c("AMZN.Adjusted", "BIMBOA.MX.Adjusted", "C.Adjusted", "NVDA.Adjusted", "NVS.Adjusted", "SAN.Adjusted", "WM.Adjusted"), new = c("Ad_AMZN", "Ad_BIMBOA.MX", "Ad_C", "Ad_NVDA", "Ad_NVS", "Ad_SAN", "Ad_WM"))
+
+dta_frm_Equity_Ad <- dta_frm_Equity_Ad %>%
+  mutate(fecha=index(Equity_Returns))
+
+dta_frm_Equity_Returns <- dta_frm_Equity_Returns %>%
+  setnames(old = c("AMZN.Adjusted", "BIMBOA.MX.Adjusted", "C.Adjusted", "NVDA.Adjusted", "NVS.Adjusted", "SAN.Adjusted", "WM.Adjusted"), new = c("AMZN_returns", "BIMBOA.MX_returns", "C_returns", "NVDA_returns", "NVS_returns", "SAN_returns", "WM_returns"))
+
+dta_frm_Equity_graph <- merge(dta_frm_Equity_Ad, dta_frm_Equity_Returns)
+
+# Ahora se crea una nueva DataFrame con tres columnas
+dta_frm_Equity_graph_tidy <- dta_frm_Equity_graph %>%
+  gather(-fecha, value=Rendimiento, 
+         key=Activo_comm)
+```
+```{r}
+dta_frm_Equity_graph_tidy %>%
+  ggplot(aes())+
+  geom_point()+
+  facet_wrap(~Activo_comm, scales = "free")
+```
+
+```{r}
+# facet_grit: Graficar el Adj. Price, y Rendimiento y … de los activos alternativos
+#S&P5 %>%
+#  ggplot(aes(Profit, Adj.Close))+
+#  geom_point()+
+#  facet_wrap(~Industry + Country)
+```
+
 Portafolio acciones
 ```{r, echo=FALSE}
 Eq_Specs_Port <- portfolio.spec(c("AMZN", "WM", "NVS", "SAN", "BIMBOA.MX", "C", "NVDA"))
@@ -168,6 +192,7 @@ Eq_Specs_Port <- add.objective(Eq_Specs_Port,
                                name='mean')
 Eq_Specs_Port
 ```
+
 Optimización NIG para Eq_Specs_Port
 ```{r, include=FALSE}
 covnig <- function(R,portfolio){
@@ -199,9 +224,9 @@ Return_Port_NIG <- Return.portfolio(Equity_Returns, W_R_NIG)
 plot(cumsum(Return_Port_NIG))
 ```
 ```{r, echo=FALSE, eval=FALSE}
-kable(table.AnnualizedReturns(Return_Port_NIG,
+table.AnnualizedReturns(Return_Port_NIG,
                         scale = 252,
-                        geometric = FALSE), format = "html")
+                        geometric = FALSE)
 ```
 ```{r, echo=FALSE}
 Return.cumulative(Return_Port_NIG,
@@ -212,7 +237,6 @@ chart.RiskReward(Optimized_Port_NIG,
                  risk.col = 'StdDev',
                  return.col = 'mean',
                  chart.assets = TRUE)
-
 ```
 
 -----------------------------
