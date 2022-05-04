@@ -112,8 +112,8 @@ Outcome lense perspective:
 # Análisis de Empresas
 # Valuación de Instrumentos Tradicionales de Renta Fija
 # Valuación de Instrumentos Tradicionales de Renta Variable
-# Portafolio Tradicional
 
+# Portafolio Tradicional
 ```{r, include=FALSE}
 Equity <- c("AMZN", "WM", "NVS", "SAN", "BIMBOA.MX", "C", "NVDA")
 getSymbols(Equity, from=as.Date("2017-02-05"), to=Sys.Date())
@@ -135,46 +135,44 @@ for(i in 3:length(Equity_ad)){
 }
 Equity_Returns <- Return.calculate(Equity_Portfolio)[-1,]
 ```
-
+## Tablas con las gráficas de los precios y rendimientos del portafolio de capitales
 ```{r, include=FALSE}
-Equity_Ad <- cbind(Ad_AMZN, Ad_BIMBOA.MX, Ad_C, Ad_NVDA, Ad_NVS, Ad_SAN, Ad_WM)
-Equity_Ad <- Equity_Ad %>%
-  na.omit()
-Equity_Ad <- Equity_Ad[-1,]
-dta_frm_Equity_Ad <- as.data.frame(Equity_Ad)
+Equity_Portfolio <- Equity_Portfolio[-1,]
+dta_frm_Equity_Portafolio <- as.data.frame(Equity_Portfolio)
+dta_frm_Equity_Returns <- as.data.frame(Equity_Returns)
+colnames(dta_frm_Equity_Returns) <- c("AMZN_return", "WM_returns", "NVS_returns", "SAN_returns", "BIMBOA.MX_returns", "C_retuns", "NVDA_returns")
 
-dta_frm_Equity_Ad %>% 
-  setnames(old = c("AMZN.Adjusted", "BIMBOA.MX.Adjusted", "C.Adjusted", "NVDA.Adjusted", "NVS.Adjusted", "SAN.Adjusted", "WM.Adjusted"), new = c("Ad_AMZN", "Ad_BIMBOA.MX", "Ad_C", "Ad_NVDA", "Ad_NVS", "Ad_SAN", "Ad_WM"))
-
-dta_frm_Equity_Ad <- dta_frm_Equity_Ad %>%
+dta_frm_Equity_Portafolio <- dta_frm_Equity_Portafolio %>%
+  mutate(fecha=index(Equity_Portfolio))
+dta_frm_Equity_Returns <- dta_frm_Equity_Returns %>%
   mutate(fecha=index(Equity_Returns))
 
-dta_frm_Equity_Returns <- dta_frm_Equity_Returns %>%
-  setnames(old = c("AMZN.Adjusted", "BIMBOA.MX.Adjusted", "C.Adjusted", "NVDA.Adjusted", "NVS.Adjusted", "SAN.Adjusted", "WM.Adjusted"), new = c("AMZN_returns", "BIMBOA.MX_returns", "C_returns", "NVDA_returns", "NVS_returns", "SAN_returns", "WM_returns"))
-
-dta_frm_Equity_graph <- merge(dta_frm_Equity_Ad, dta_frm_Equity_Returns)
-
 # Ahora se crea una nueva DataFrame con tres columnas
-dta_frm_Equity_graph_tidy <- dta_frm_Equity_graph %>%
-  gather(-fecha, value=Rendimiento, 
-         key=Activo_comm)
+dta_frm_Equity_Port_tidy <- dta_frm_Equity_Portafolio %>%
+  gather(-fecha, 
+         value=Precio_Adj, 
+         key=Activos_de_Capital)
+# Tidy cumsum(returns)
+dta_frm_Equity_returns_tidy <- dta_frm_Equity_Returns %>%
+  gather(-fecha, 
+         value=Rendimiento, 
+         key=Retornos_de_Activos_de_Capital)
+
 ```
-```{r}
-dta_frm_Equity_graph_tidy %>%
-  ggplot(aes())+
-  geom_point()+
-  facet_wrap(~Activo_comm, scales = "free")
+```{r, echo=FALSE}
+dta_frm_Equity_Port_tidy %>%
+  ggplot(aes(x=fecha, y=Precio_Adj, col=Activos_de_Capital))+
+  geom_line()+
+  facet_wrap(.~Activos_de_Capital, scales = "free")
+```
+```{r, echo=FALSE}
+dta_frm_Equity_returns_tidy %>%
+  ggplot(aes(x=fecha, y=cumsum(Rendimiento), col=Retornos_de_Activos_de_Capital))+
+  geom_line()+
+  facet_wrap(.~Retornos_de_Activos_de_Capital, scales = "free")
 ```
 
-```{r}
-# facet_grit: Graficar el Adj. Price, y Rendimiento y … de los activos alternativos
-#S&P5 %>%
-#  ggplot(aes(Profit, Adj.Close))+
-#  geom_point()+
-#  facet_wrap(~Industry + Country)
-```
-
-Portafolio acciones
+## Portafolio acciones
 ```{r, echo=FALSE}
 Eq_Specs_Port <- portfolio.spec(c("AMZN", "WM", "NVS", "SAN", "BIMBOA.MX", "C", "NVDA"))
 ##### Add Constraints #####
@@ -192,7 +190,6 @@ Eq_Specs_Port <- add.objective(Eq_Specs_Port,
                                name='mean')
 Eq_Specs_Port
 ```
-
 Optimización NIG para Eq_Specs_Port
 ```{r, include=FALSE}
 covnig <- function(R,portfolio){
@@ -219,6 +216,7 @@ W_R_NIG
 ```{r, echo=FALSE}
 sum(W_R_NIG)
 ```
+## Análisis de Portafolio de Acciones
 ```{r, echo=FALSE}
 Return_Port_NIG <- Return.portfolio(Equity_Returns, W_R_NIG)
 plot(cumsum(Return_Port_NIG))
@@ -232,6 +230,15 @@ table.AnnualizedReturns(Return_Port_NIG,
 Return.cumulative(Return_Port_NIG,
                   geometric = FALSE)
 ```
+
+```{r}
+var.portfolio(Return_Port_NIG, weights=W_R_NIG)
+```
+
+```{r}
+chart.VaRSensitivity(Return_Port_NIG)
+```
+
 ```{r, echo=FALSE}
 chart.RiskReward(Optimized_Port_NIG,
                  risk.col = 'StdDev',
@@ -265,17 +272,17 @@ Commodities_Returns <- Return.calculate(Commodities_Portfolio)[-1,]
 ## Precios Ajustados de Portafolio Commodities
 ```{r, eval=FALSE}
 # Commodities_Portafolio es una matriz xts. Para graficar sus variables hay que pasarlo a DataFrame
-dta_fram_commodities <- as.data.frame(Commodities_Portfolio)
+dta_frm_commodities <- as.data.frame(Commodities_Portfolio)
 #Debemos crear una nueva columna que sirva de guia con las fechas. La columna "fecha" es igual al index del objeto
-dta_fram_commodities <- dta_fram_commodities %>%
+dta_frm_commodities <- dta_frm_commodities %>%
   mutate(fecha=index(Commodities_Portfolio))
 # Ahora se crea una nueva DataFrame con tres columnas
-dta_fram_commodities_tidy <- dta_fram_commodities %>%
+dta_frm_commodities_tidy <- dta_frm_commodities %>%
   gather(-fecha, value=Rendimiento, 
          key=Activo_comm)
 ```
 ```{r, echo=FALSE}
-dta_fram_commodities_tidy %>%
+dta_frm_commodities_tidy %>%
   ggplot(aes(x=fecha, y=Rendimiento, col=Activo_comm))+
   geom_line()+
   facet_wrap(.~Activo_comm, scales = "free")
@@ -291,12 +298,14 @@ dta_fram_commod_return <- dta_fram_commod_return %>%
 dta_fram_commod_return_tidy <- dta_fram_commod_return %>%
   gather(-fecha, value=Rendimiento, 
          key=Activo_comm_ret)
-
+```
+```{r, echo=FALSE}
 dta_fram_commod_return_tidy %>%
   ggplot(aes(x=fecha, y=cumsum(Rendimiento), col=Activo_comm_ret))+
   geom_line()+
   facet_wrap(.~Activo_comm_ret, scales = "free")
 ```
+
 ## Correlación entre Commodities y el Portafolio Tradicional
 ```{r}
 Equity_Commodities_Returns_Port <- merge(Return_Port_NIG,Equity_Returns,Commodities_Returns,
@@ -522,3 +531,13 @@ table.AnnualizedReturns(Return_opt,
 Return.cumulative(Return_opt,
                   geometric = FALSE)
 ```
+
+
+# Hedge Funds
+```{r}
+hf_strategies <- read.csv("https://risk.edhec.edu/sites/risk/files/indices/Indices/Edhec%20Alternative%20Indices/Web/table/history.csv")
+```
+
+
+
+
