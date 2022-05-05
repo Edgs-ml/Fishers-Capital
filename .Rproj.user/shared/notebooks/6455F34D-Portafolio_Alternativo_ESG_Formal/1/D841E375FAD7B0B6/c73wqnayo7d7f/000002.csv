@@ -1,5 +1,0 @@
-"0","Equity_Commodities_Returns_Port <- merge(Return_Port_NIG,Equity_Returns,Commodities_Returns,"
-"0","                                         by=index(""fecha""))"
-"0","Equity_Commodities_Returns_Port <- as.data.frame(Equity_Commodities_Returns_Port)"
-"0","Equity_Commodities_Returns_Port <- Equity_Commodities_Returns_Port %>%"
-"0","  na.omit()"

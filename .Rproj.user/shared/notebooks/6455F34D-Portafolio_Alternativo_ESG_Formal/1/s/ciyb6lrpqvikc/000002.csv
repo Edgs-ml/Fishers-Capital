@@ -16,6 +16,3 @@
 "2","Leverage constraint min_sum and max_sum are restrictive, 
               consider relaxing. e.g. 'full_investment' constraint should be min_sum=0.99 and max_sum=1.01
 "
-"2","Warning:"
-"2"," executing %dopar% sequentially: no parallel backend registered
-"

@@ -113,7 +113,7 @@ Outcome lense perspective:
 # Valuación de Instrumentos Tradicionales de Renta Fija
 # Valuación de Instrumentos Tradicionales de Renta Variable
 
-# Portafolio Tradicional
+# Portafolio de Capitales
 ```{r, include=FALSE}
 Equity <- c("AMZN", "WM", "NVS", "SAN", "BIMBOA.MX", "C", "NVDA")
 getSymbols(Equity, from=as.Date("2017-02-05"), to=Sys.Date())
@@ -267,7 +267,8 @@ for(i in 3:length(Commodities_ad)){
                          get(Commodities_ad[i]),
                          join = "inner")
 }
-Commodities_Returns <- Return.calculate(Commodities_Portfolio)[-1,]
+Commodities_Returns <- Return.calculate(Commodities_Portfolio, method = "log")[-1,]
+Commodities_Returns <- na.locf(Commodities_Returns)
 ```
 ## Precios Ajustados de Portafolio Commodities
 ```{r, eval=FALSE}
@@ -316,27 +317,27 @@ Equity_Commodities_Returns_Port <- Equity_Commodities_Returns_Port %>%
 ```
 ```{r}
 Coffe_correlation <- rollapply(data=Equity_Commodities_Returns_Port, 
-                              width=253, 
+                              width=63, 
                               function(x) cor(x[,1], x[,9]), 
                               by.column = F)
 Sugar_correlation <- rollapply(data=Equity_Commodities_Returns_Port, 
-                              width=253, 
+                              width=63, 
                               function(x) cor(x[,1], x[,10]), 
                               by.column = F)
 Gold_correlation <- rollapply(data=Equity_Commodities_Returns_Port, 
-                              width=253, 
+                              width=63, 
                               function(x) cor(x[,1], x[,11]), 
                               by.column = F)
 Silver_correlation <- rollapply(data=Equity_Commodities_Returns_Port, 
-                              width=253, 
+                              width=63, 
                               function(x) cor(x[,1], x[,12]), 
                               by.column = F)
 Wheat_correlation <- rollapply(data=Equity_Commodities_Returns_Port, 
-                              width=253, 
+                              width=63, 
                               function(x) cor(x[,1], x[,13]), 
                               by.column = F)
 Corn_correlation <- rollapply(data=Equity_Commodities_Returns_Port, 
-                              width=253, 
+                              width=63, 
                               function(x) cor(x[,1], x[,14]), 
                               by.column = F)
 ```
@@ -349,7 +350,7 @@ cor_dta_fram_comm <- cor_dta_fram_comm %>%
          as.data.frame(Silver_correlation),
          as.data.frame(Wheat_correlation),
          as.data.frame(Corn_correlation),
-         fecha=index(Commodities_Portfolio[298:1317,]))
+         fecha=index(tail(Commodities_Portfolio, length(Sugar_correlation))))
 ```
 Gráfica de correlaciones de los commodities con el portafolio
 ```{r, echo=FALSE}
@@ -372,7 +373,8 @@ dta_frm_Commodities_Returns <- as.data.frame(Commodities_Returns)
 dta_frm_Equity_Returns <- as.data.frame(Equity_Returns)
 
 EquityKC.F_Returns <- dta_frm_Equity_Returns %>%
-  mutate(Coffe_return=dta_frm_Commodities_Returns$KC.F.Adjusted)
+  mutate(Coffe_return=tail(dta_frm_Commodities_Returns$KC.F.Adjusted, length()))
+
 ```
 ```{r}
 EqComKC.F_Specs_Port <- portfolio.spec(c("AMZN", "WM", "NVS", "SAN", "BIMBOA.MX", "C", "NVDA", "KC=F"))
