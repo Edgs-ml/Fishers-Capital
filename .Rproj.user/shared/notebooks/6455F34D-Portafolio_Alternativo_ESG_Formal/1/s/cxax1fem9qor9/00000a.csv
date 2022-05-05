@@ -1,4 +1,0 @@
-"0","dta_frm_Equity <- merge(dta_frm_Equity_Returns)
-"
-"2","Error in as.data.frame(y) : argument ""y"" is missing, with no default
-"

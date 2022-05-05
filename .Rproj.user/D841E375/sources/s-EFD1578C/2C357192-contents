@@ -1,0 +1,137 @@
+---
+title: "R Notebook"
+subtitle: "Portafolio"
+output: 
+---
+#### 1. Librerias
+library(zoo)
+library(xts)
+library(TTR)
+library(quantmod)
+library(PerformanceAnalytics)
+library(tidyverse)
+library(psych)
+library(forecast)
+library(tseries)
+library(timeSeries)
+library(naniar)
+library(lmtest)
+library(stocks)
+#### 2. Datos
+getSymbols("BTC-USD", from = "2017-01-01", to = "2022-02-20")
+getSymbols("ETH-USD", from = "2017-01-01", to = "2022-02-20")
+getSymbols("USDC-USD", from = "2017-01-01", to = "2022-02-20")
+getSymbols("USDT-USD", from = "2017-01-01", to = "2022-02-20")
+getSymbols("ADA-USD", from = "2017-01-01", to = "2022-02-20")
+getSymbols("BNB-USD", from = "2017-01-01", to = "2022-02-20")
+getSymbols("XRP-USD", from = "2017-01-01", to = "2022-02-20")
+getSymbols("HEX-USD", from = "2017-01-01", to = "2022-02-20")
+#------------------------
+btc <- Ad(`BTC-USD`)
+eth <- Ad(`ETH-USD`)
+usdc <- Ad(`USDC-USD`)
+usdt <- Ad(`USDT-USD`)
+ada <- Ad(`ADA-USD`)
+bnb <- Ad(`BNB-USD`)
+xrp <- Ad(`XRP-USD`)
+hex <- Ad(`HEX-USD`)
+#------------------------
+btc <- na.locf(btc)
+eth <- na.locf(eth)
+usdc <- na.locf(usdc)
+usdt <- na.locf(usdt)
+ada <- na.locf(ada)
+bnb <- na.locf(bnb)
+xrp <- na.locf(xrp)
+hex <- na.locf(hex)
+
+###------------------------ Portafolio ------------------------
+Criptomonedas <- merge.xts(btc,
+                           eth,
+                           usdc,
+                           usdt,
+                           ada,
+                           bnb,
+                           xrp,
+                           hex,
+                           join = "inner")
+cor.plot(Criptomonedas)
+chartSeries(Criptomonedas)
+#addBBands()
+#add_RSI()
+
+
+
+
+#### 3. Análisis de Portafolio-----------------------
+# Calculo de los rendimientos del 
+Rendimientos_C <- Return.calculate(Criptomonedas, method = "log")[-1]
+
+chartSeries(Rendimientos_C)
+chart.RiskReturnScatter(Criptomonedas)
+chart.RelativePerformance(Criptomonedas)
+Return.cumulative(Rendimientos_C)
+Return.portfolio(Criptomonedas)
+
+
+chart.CumReturns(Rendimientos_C, from = "2018-01-01", to = "2022-02-20")
+chart.CumReturns(Rendimientos_C, from = "2018-01-01", to = "2022-02-20", legend.loc = "topleft")
+table.AnnualizedReturns(Rendimientos_C)
+
+chart.TimeSeries(scale(Criptomonedas),
+                 from = "2021-01-01", to = "2022-02-20", 
+                 legend.loc = "topleft")
+
+VaR(Rendimientos_C$BTC.USD.Adjusted,
+    p=0.95,
+    method = "historical")
+
+
+library(fBasics)#Analisis estadistico
+library(aTSA)#Raiz Unitaria
+library(QuantPsyc)#Pruba multivariada de normlaidad
+library(statmod)
+install.packages("numDeriv")
+install.packages("MASS")
+library(MASS)
+library(numDeriv)
+library(ghyp)#multivariado NIG
+library(cramer)#Pruba cramer NIG multivariada
+install.packages("boot")
+library(boot)
+
+retornos_btc <- Return.calculate(btc,method = "log")
+retornos_btc <- retornos_btc[-1,]
+mu_rtbc <- mean(retornos_btc$`BTC-USD.Adjusted`)
+m <- mean(retornos$OMX.20)
+sd <- sd(retornos_btc$`BTC-USD.Adjusted`)
+len<-length(retornos_btc$`BTC-USD.Adjusted`)
+basenormal<-rnorm(len, mu_rtbc, sd)
+
+ggplot(retornos_btc, aes(retornos_btc$`BTC-USD.Adjusted`))+
+  geom_density()+
+  geom_vline(xintercept = mu_rtbc)
+
+plot(density(retornos$OMX.20),col="blue",ylim=c(0,60), main="Distribuciones contra normal")+
+  lines(density(basenormal),
+        col="red")
+
+
+
+retornos_btc %>%
+  ggplot(aes(`BTC-USD.Adjusted`))+
+  geom_density()+
+  geom_density(basenormal, col = "red")
+
+plot(density(retornos_btc$`BTC-USD.Adjusted`),
+     col = "blue", main = "Distribuciones contra normal")+
+    lines(density(basenormal), col = "green")
+
+btc <- as.data.frame(btc)
+Rendimientos_C<- as.data.frame(Rendimientos_C)
+
+Rendimientos_C<- as.data.frame(Rendimientos_C)
+plot(density(Rendimientos_C$BTC.USD.Adjusted), col="blue", ylim=c(0,60), main="Distribuciones contra normal")
+  
+
+

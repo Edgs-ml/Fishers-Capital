@@ -1,0 +1,2 @@
+"0","chartSeries(`BTC-USD`, subset='last 4 months',"
+"0","            TA=c(addVo(), addBBands(), addMACD()))"

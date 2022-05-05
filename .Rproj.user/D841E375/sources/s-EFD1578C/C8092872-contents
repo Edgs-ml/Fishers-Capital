@@ -1,0 +1,132 @@
+---
+title: "M2. Actividad 1. Valuación de Cryptoactivos"
+author: "Edgar Sigfrido Soto Aparicio"
+date: "5/4/2022"
+output: html_document
+---
+## 1. Librerias
+```{r, include=FALSE}
+library(zoo)
+library(xts)
+library(TTR)
+library(quantmod)
+library(PerformanceAnalytics)
+library(tidyverse)
+library(psych)
+library(forecast)
+library(tseries)
+library(timeSeries)
+library(naniar)
+library(lmtest)
+library(stocks)
+library(PortfolioAnalytics)
+```
+# Portafolio_Tradicional
+```{r}
+getSymbols("BTC-USD", from=as.Date("2016-02-02"), to=Sys.Date())
+getSymbols("GLD", from=as.Date("2016-02-02"), to=Sys.Date())
+
+btc <- Ad(`BTC-USD`)
+gld <- Ad(`GLD`)
+
+btc <- na.locf(btc)
+gld <- na.locf(gld)
+
+Portafolio_tradicional <- merge.xts(btc, gld,
+                                    join = "inner")
+
+Portafolio_tradicional_Returns <- Return.calculate(Portafolio_tradicional,
+                                                   method = "log")[-1,]
+```
+```{r}
+chartSeries(Portafolio_tradicional)
+```
+# Portafolio tradicional 
+```{r}
+Port_Trad_Specs <- portfolio.spec(c("BTC-USD", "GLD"))
+##### Add Constraints #####
+Specs_Port_Trad <- add.constraint(Port_Trad_Specs,
+                                type="full_investment")
+Specs_Port_Trad <- add.constraint(Port_Trad_Specs,
+                                type="long_only")
+Specs_Port_Trad <- add.constraint(Port_Trad_Specs,
+                                  type="return", 
+                                  return_target=0.17)
+Specs_Port_Trad <- add.constraint(Port_Trad_Specs,
+                                  type="box")
+
+##### Add Objective #####
+Specs_Port_Trad <- add.objective(Specs_Port_Trad,
+                               type="risk",
+                               name="StdDev")
+Specs_Port_Trad <- add.objective(Specs_Port_Trad,
+                               type='return',
+                               name='mean')
+Specs_Port_Trad
+```
+ 
+```{r}
+Port_trad_optimized <- optimize.portfolio(Portafolio_tradicional_Returns,
+                                          Specs_Port_Trad)
+Port_trad_optimized
+```
+```{r}
+chart.Weights(Port_trad_optimized)
+W <- extractWeights(Port_trad_optimized)
+```
+
+Analisis de portafolio
+```{r}
+Return_opt <- Return.portfolio(Portafolio_tradicional_Returns, W)
+
+table.AnnualizedReturns(Portafolio_tradicional_Returns,
+                        scale = 252,
+                        geometric = FALSE)
+Return.cumulative(Portafolio_tradicional_Returns,
+                  geometric = FALSE)
+```
+
+
+
+
+
+
+
+2. Activos de Yahoo
+```{r, include=FALSE}
+Equity <- c("BTC-USD", "ETH-USD", "ADA-USD", "BNB-USD", "XRP-USD", "HEX-USD", "CETETRCISHRS.MX", "NAFTRACISHRS.MX", "GLD")
+getSymbols(Equity, from=as.Date("2016-02-01"), to=Sys.Date())
+
+Equity_ad <- NULL
+for(i in Equity){
+  assign(paste0("Ad_",i), Ad(get(i)))
+  Equity_ad <- c(Equity_ad, paste0("Ad_",i))
+}
+
+Equity_Portfolio <- merge.xts(get(Equity_ad[1]),
+                       get(Equity_ad[2]),
+                       join = "inner")
+
+for(i in 3:length(Equity_ad)){
+  Equity_Portfolio <- merge.xts(Equity_Portfolio,
+                         get(Equity_ad[i]),
+                         join = "inner")
+}
+Equity_Returns <- Return.calculate(Equity_Portfolio)[-1,]
+```
+
+
+
+
+```{r}
+chartSeries(`BTC-USD`, subset='last 4 months',
+            TA=c(addVo(), addBBands(), addMACD()))
+```
+
+
+
+
+
+
+
+
