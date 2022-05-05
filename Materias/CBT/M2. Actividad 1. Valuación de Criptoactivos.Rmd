@@ -1,6 +1,6 @@
 ---
 title: "M2. Actividad 1. Valuación de Cryptoactivos"
-author: "Edgar Sigfrido Soto Aparicio"
+author: "FISHERs CAPITAL"
 date: "5/4/2022"
 output: html_document
 ---
