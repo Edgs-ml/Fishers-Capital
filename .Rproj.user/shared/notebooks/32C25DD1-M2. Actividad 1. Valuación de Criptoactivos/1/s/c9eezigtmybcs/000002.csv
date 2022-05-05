@@ -1,8 +1,0 @@
-"0","Port_trad_optimized <- optimize.portfolio(Portafolio_tradicional_Returns,"
-"0","                                          Specs_Port_Trad)"
-"2","Leverage constraint min_sum and max_sum are restrictive, 
-              consider relaxing. e.g. 'full_investment' constraint should be min_sum=0.99 and max_sum=1.01
-"
-"2","Error in seq.default(from = round(min, rounding), to = round(max, rounding),  : 
-  'from' must be a finite number
-"

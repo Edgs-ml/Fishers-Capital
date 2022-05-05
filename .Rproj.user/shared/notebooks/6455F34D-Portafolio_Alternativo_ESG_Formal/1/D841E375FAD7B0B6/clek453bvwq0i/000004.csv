@@ -1,0 +1,4 @@
+"0","dta_frm_commodities_tidy %>%"
+"0","  ggplot(aes(x=fecha, y=Rendimiento, col=Activo_comm))+"
+"0","  geom_line()+"
+"0","  facet_wrap(.~Activo_comm, scales = ""free"")"

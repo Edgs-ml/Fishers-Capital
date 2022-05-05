@@ -1,0 +1,163 @@
+---
+title: "M2. Actividad 1. Valuación de Cryptoactivos"
+author: "FISHERs CAPITAL"
+date: "5/4/2022"
+output: html_document
+---
+## 1. Librerias
+```{r, include=FALSE}
+library(zoo)
+library(xts)
+library(TTR)
+library(quantmod)
+library(PerformanceAnalytics)
+library(tidyverse)
+library(psych)
+library(forecast)
+library(tseries)
+library(timeSeries)
+library(naniar)
+library(lmtest)
+library(stocks)
+library(PortfolioAnalytics)
+```
+# Portafolio_Tradicional
+```{r, echo=FALSE}
+getSymbols("BTC-USD", from=as.Date("2016-02-02"), to=Sys.Date())
+getSymbols("GLD", from=as.Date("2016-02-02"), to=Sys.Date())
+
+btc <- Ad(`BTC-USD`)
+gld <- Ad(`GLD`)
+
+btc <- na.locf(btc)
+gld <- na.locf(gld)
+
+Portafolio_tradicional <- merge.xts(btc, gld,
+                                    join = "inner")
+
+Portafolio_tradicional_Returns <- Return.calculate(Portafolio_tradicional,
+                                                   method = "log")[-1,]
+```
+```{r, echo=FALSE}
+chartSeries(Portafolio_tradicional)
+```
+# Portafolio tradicional (60-40)
+```{r, include=FALSE}
+Port_Trad_Specs <- portfolio.spec(c("BTC-USD", "GLD"))
+##### Add Constraints #####
+Specs_Port_Trad <- add.constraint(Port_Trad_Specs,
+                                type="full_investment")
+Specs_Port_Trad <- add.constraint(Port_Trad_Specs,
+                                type="long_only")
+Specs_Port_Trad <- add.constraint(Port_Trad_Specs,
+                                  type="return", 
+                                  return_target=0.17)
+Specs_Port_Trad <- add.constraint(Port_Trad_Specs,
+                                  type="box",
+                                  min=0.40, max=0.60)
+
+##### Add Objective #####
+Specs_Port_Trad <- add.objective(Specs_Port_Trad,
+                               type="risk",
+                               name="StdDev")
+Specs_Port_Trad <- add.objective(Specs_Port_Trad,
+                               type='return',
+                               name='mean')
+Specs_Port_Trad
+```
+ 
+```{r,include=FALSE}
+Port_trad_optimized <- optimize.portfolio(Portafolio_tradicional_Returns,
+                                          Specs_Port_Trad)
+Port_trad_optimized
+```
+```{r, echo=FALSE}
+chart.Weights(Port_trad_optimized, plot.type = "barplot")
+W <- extractWeights(Port_trad_optimized)
+```
+## Analisis de portafolio
+```{r, echo=FALSE}
+Return_opt <- Return.portfolio(Portafolio_tradicional_Returns, W)
+
+table.AnnualizedReturns(Return_opt,
+                        scale = 252,
+                        geometric = FALSE)
+Return.cumulative(Return_opt,
+                  geometric = FALSE)
+```
+```{r, echo=FALSE}
+plot(cumsum(Return_opt))
+```
+```{r, echo=FALSE}
+chartSeries(`BTC-USD`, subset='last 4 months',
+            TA=c(addVo(), addBBands(), addMACD()))
+```
+2. Activos de Yahoo
+```{r, include=FALSE}
+Cripto <- c("BTC-USD", "ETH-USD", "ADA-USD", "BNB-USD", "XRP-USD", "HEX-USD")
+getSymbols(Cripto, from=as.Date("2016-02-01"), to=Sys.Date())
+
+Cripto_ad <- NULL
+for(i in Cripto){
+  assign(paste0("Ad_",i), Ad(get(i)))
+  Cripto_ad <- c(Cripto_ad, paste0("Ad_",i))
+}
+
+Cripto_Portfolio <- merge.xts(get(Cripto_ad[1]),
+                       get(Cripto_ad[2]),
+                       join = "inner")
+
+for(i in 3:length(Cripto_ad)){
+  Cripto_Portfolio <- merge.xts(Cripto_Portfolio,
+                         get(Cripto_ad[i]),
+                         join = "inner")
+}
+Cripto_Returns <- Return.calculate(Cripto_Portfolio)[-1,]
+```
+
+```{r, include=FALSE}
+Port_Cripto_Specs <- portfolio.spec(c("BTC-USD", "ETH-USD", "ADA-USD", "BNB-USD", "XRP-USD", "HEX-USD"))
+##### Add Constraints #####
+Specs_Port_Cripto <- add.constraint(Port_Cripto_Specs,
+                                type="full_investment")
+Specs_Port_Cripto <- add.constraint(Port_Cripto_Specs,
+                                type="long_only")
+
+##### Add Objective #####
+Specs_Port_Cripto <- add.objective(Specs_Port_Cripto,
+                               type="risk",
+                               name="StdDev")
+Specs_Port_Cripto <- add.objective(Specs_Port_Cripto,
+                               type='return',
+                               name='mean')
+Specs_Port_Cripto
+```
+```{r, include=FALSE}
+Port_Cripto_optimized <- optimize.portfolio(Cripto_Returns,
+                                            Specs_Port_Cripto)
+Port_Cripto_optimized
+```
+## Peso de los Cripto activos en el portafolio
+```{r, echo=FALSE}
+chart.Weights(Port_Cripto_optimized, plot.type = "barplot")
+CW <- extractWeights(Port_Cripto_optimized)
+```
+# Análisis del Portafolio de Cripto Activos
+```{r, echo=FALSE}
+Return_Cripto_opt <- Return.portfolio(Cripto_Returns, CW)
+
+table.AnnualizedReturns(Return_Cripto_opt,
+                        scale = 252,
+                        geometric = FALSE)
+Return.cumulative(Return_Cripto_opt,
+                  geometric = FALSE)
+```
+## Gráfica del rendimiento del portafolio de Cripto Activos de los últimos 6 meses
+```{r, echo=FALSE}
+chartSeries(cumsum(Return_Cripto_opt), subset='last 6 months')
+```
+
+
+
+
+

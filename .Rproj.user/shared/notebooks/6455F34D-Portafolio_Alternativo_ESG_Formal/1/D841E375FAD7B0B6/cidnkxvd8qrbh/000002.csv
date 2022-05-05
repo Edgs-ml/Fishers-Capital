@@ -1,0 +1,3 @@
+"0","var.portfolio(Return_Port_NIG, weights=W_R_NIG)"
+"2","Error in t(weights) %*% var(R) : non-conformable arguments
+"

@@ -1,0 +1,2 @@
+"0","Return_Port_NIG <- Return.portfolio(Equity_Returns, W_R_NIG)"
+"0","plot(cumsum(Return_Port_NIG))"

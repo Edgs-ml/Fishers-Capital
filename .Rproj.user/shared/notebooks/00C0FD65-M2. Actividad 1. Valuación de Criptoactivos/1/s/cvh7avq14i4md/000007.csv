@@ -1,0 +1,13 @@
+"0","table.AnnualizedReturns(Return_opt,
+                        scale = 252,
+                        geometric = FALSE)
+"
+"0","Return.cumulative(Return_opt,"
+"0","                  geometric = FALSE)"
+"1","                 "
+"1"," portfolio.returns"
+"1","
+Cumulative Return"
+"1","          3.295082"
+"1","
+"
