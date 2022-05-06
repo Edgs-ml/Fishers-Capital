@@ -231,14 +231,16 @@ Return.cumulative(Return_Port_NIG,
                   geometric = FALSE)
 ```
 
-```{r}
-var.portfolio(Return_Port_NIG, weights=W_R_NIG)
-```
+
 
 ```{r}
-chart.VaRSensitivity(Return_Port_NIG)
+chart.VaRSensitivity(Return_Port_NIG)+
+  abline(a=NULL, 
+         b=NULL, 
+         h=NULL, 
+         v=0.95, 
+         col="red")
 ```
-
 ```{r, echo=FALSE}
 chart.RiskReward(Optimized_Port_NIG,
                  risk.col = 'StdDev',
@@ -317,27 +319,27 @@ Equity_Commodities_Returns_Port <- Equity_Commodities_Returns_Port %>%
 ```
 ```{r}
 Coffe_correlation <- rollapply(data=Equity_Commodities_Returns_Port, 
-                              width=63, 
+                              width=252, 
                               function(x) cor(x[,1], x[,9]), 
                               by.column = F)
 Sugar_correlation <- rollapply(data=Equity_Commodities_Returns_Port, 
-                              width=63, 
+                              width=252, 
                               function(x) cor(x[,1], x[,10]), 
                               by.column = F)
 Gold_correlation <- rollapply(data=Equity_Commodities_Returns_Port, 
-                              width=63, 
+                              width=252, 
                               function(x) cor(x[,1], x[,11]), 
                               by.column = F)
 Silver_correlation <- rollapply(data=Equity_Commodities_Returns_Port, 
-                              width=63, 
+                              width=252, 
                               function(x) cor(x[,1], x[,12]), 
                               by.column = F)
 Wheat_correlation <- rollapply(data=Equity_Commodities_Returns_Port, 
-                              width=63, 
+                              width=252, 
                               function(x) cor(x[,1], x[,13]), 
                               by.column = F)
 Corn_correlation <- rollapply(data=Equity_Commodities_Returns_Port, 
-                              width=63, 
+                              width=252, 
                               function(x) cor(x[,1], x[,14]), 
                               by.column = F)
 ```
@@ -373,7 +375,7 @@ dta_frm_Commodities_Returns <- as.data.frame(Commodities_Returns)
 dta_frm_Equity_Returns <- as.data.frame(Equity_Returns)
 
 EquityKC.F_Returns <- dta_frm_Equity_Returns %>%
-  mutate(Coffe_return=tail(dta_frm_Commodities_Returns$KC.F.Adjusted, length()))
+  mutate(Coffe_return=tail(dta_frm_Commodities_Returns$KC.F.Adjusted, length(580)))
 
 ```
 ```{r}
