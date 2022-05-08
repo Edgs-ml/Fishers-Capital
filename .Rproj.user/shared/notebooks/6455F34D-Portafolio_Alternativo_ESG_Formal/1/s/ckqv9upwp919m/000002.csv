@@ -40,4 +40,5 @@
 "0","                         get(Commodities_ad[i]),"
 "0","                         join = ""inner"")"
 "0","}"
-"0","Commodities_Returns <- Return.calculate(Commodities_Portfolio)[-1,]"
+"0","Commodities_Returns <- Return.calculate(Commodities_Portfolio, method = ""log"")[-1,]"
+"0","Commodities_Returns <- na.locf(Commodities_Returns)"

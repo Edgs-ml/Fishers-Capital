@@ -1,4 +1,0 @@
-"0","dta_frm_Equity_returns_tidy %>%"
-"0","  ggplot(aes(x=fecha, y=cumsum(Rendimiento), col=Retornos_de_Activos_de_Capital))+"
-"0","  geom_line()+"
-"0","  facet_wrap(.~Retornos_de_Activos_de_Capital, scales = ""free"")"

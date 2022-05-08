@@ -1,0 +1,8 @@
+"0","EquityKC.F_Returns <- Equity_Returns"
+"0",""
+"0","dta_frm_Commodities_Returns <- as.data.frame(Commodities_Returns)"
+"0","dta_frm_Equity_Returns <- as.data.frame(Equity_Returns)"
+"0",""
+"0","EquityKC.F_Returns <- dta_frm_Equity_Returns %>%"
+"0","  mutate(Coffe_return=tail(dta_frm_Commodities_Returns$KC.F.Adjusted, length(580)))"
+"0",""
