@@ -1,8 +1,13 @@
-"0","Equity <- c(""AMZN"", ""WM"", ""NVS"", ""SAN"", ""BIMBOA.MX"", ""C"", ""NVDA"")"
+"0","Equity <- c(""AMZN"", ""WM"", ""NVS"", ""SAN"", ""BIMBOA.MX"", ""C"", ""NVDA"", ""SI=F"")"
 "0","getSymbols(Equity, from=as.Date(""2017-02-05""), to=Sys.Date())"
 "2","pausing 1 second between requests for more than 5 symbols
 "
 "2","pausing 1 second between requests for more than 5 symbols
+"
+"2","pausing 1 second between requests for more than 5 symbols
+"
+"2","Warning:"
+"2"," SI=F contains missing values. Some functions will not work if objects contain missing values in the middle of the series. Consider using na.omit(), na.approx(), na.fill(), etc to remove or replace them.
 "
 "2","pausing 1 second between requests for more than 5 symbols
 "
@@ -13,10 +18,11 @@
 "1"," ""SAN""      "
 "1"," ""BIMBOA.MX"""
 "1"," ""C""        "
+"1"," ""NVDA""     "
 "1","
 "
-"1","[7]"
-"1"," ""NVDA""     "
+"1","[8]"
+"1"," ""SI=F""     "
 "1","
 "
 "0","Equity_ad <- NULL"

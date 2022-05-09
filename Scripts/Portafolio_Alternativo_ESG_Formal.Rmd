@@ -115,7 +115,7 @@ Outcome lense perspective:
 
 # Portafolio de Capitales
 ```{r, include=FALSE}
-Equity <- c("AMZN", "WM", "NVS", "SAN", "BIMBOA.MX", "C", "NVDA")
+Equity <- c("AMZN", "WM", "NVS", "SAN", "BIMBOA.MX", "C", "NVDA", "SI=F")
 getSymbols(Equity, from=as.Date("2017-02-05"), to=Sys.Date())
 
 Equity_ad <- NULL
@@ -174,7 +174,7 @@ dta_frm_Equity_returns_tidy %>%
 
 ## Portafolio acciones
 ```{r, echo=FALSE}
-Eq_Specs_Port <- portfolio.spec(c("AMZN", "WM", "NVS", "SAN", "BIMBOA.MX", "C", "NVDA"))
+Eq_Specs_Port <- portfolio.spec(c("AMZN", "WM", "NVS", "SAN", "BIMBOA.MX", "C", "NVDA", "SI=F"))
 ##### Add Constraints #####
 Eq_Specs_Port <- add.constraint(Eq_Specs_Port,
                                 type="full_investment")
