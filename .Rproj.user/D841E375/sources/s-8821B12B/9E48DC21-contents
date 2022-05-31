@@ -15,6 +15,7 @@ library(psych)
 library(DEoptim)
 library(visdat)
 library(ghyp)
+library()
 ```
 
 # Sobre Nuestra Nota Estructurada
