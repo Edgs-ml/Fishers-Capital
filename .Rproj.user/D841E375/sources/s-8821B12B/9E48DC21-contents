@@ -29,9 +29,9 @@ Para el Excel parametricen el % Costos (4 Tipos de costos, en este momento suman
 
 # Valuación y expectativas de IDBTVER
 ```{r, include=FALSE}
-IDBTVER <- c("ABB", "ADSGn", "AES", "AA", "AMCR", "AMT", "APMSF", "AZNCF", "AY", "BBVA",
-             "DVI_p", "BSAC", "CIB", "BAC", "BNS", "BMWYY", "BIOX", "BNPQF", "BRMSY", "BG",
-             "CRRFY", "CEL", "CX", "CENCOSHOPP", "CC", "CHYHY", "C", "CNHI", "COA", "COLBUN",
+IDBTVER <- c("ABB", "ADDYY", "AES", "AA", "AMCR", "AMT", "APMSF", "AZNCF", "AY", "BBVA",
+             "BSAC", "CIB", "BAC", "BNS", "BMWYY", "BIOX", "BNPQF", "BRMSY", "BG",
+             "CRRFY", "CX", "CENCOSHOPP.SN", "CC", "CHYHY", "C", "CNHI", "COA", "COLBUN.SN",
              "CL", "SGOBp", "CIG", "CPLE3", "VESTA", "DANO", "ETN", "ENIA", "EGIEY", "FUNO11",
              "FLEX", "FSM", "G", "GF", "GIVN", "GBOOY", "HPE", "HOTG", "HPQ", "IBDRY",
              "IDEXY", "INTC", "IBM", "ITUB", "JNJ", "JCI", "JLL", "JPM", "K", "KMB", "HCMLY",
@@ -40,6 +40,25 @@ IDBTVER <- c("ABB", "ADSGn", "AES", "AA", "AMCR", "AMT", "APMSF", "AZNCF", "AY",
              "PG", "RNLSY", "RO", "006400.KS", "SASY", "SGSOY", "GCTAY", "SMFKY", "BB.PA",
              "TAK", "TEF", "TIMB", "UL", "FR.PA", "VWDRY", "VCISY", "VIRB", "WRTBY", "ZFSVF")
 
+getSymbols(IDBTVER, from=as.Date("2014-03-29"), to=Sys.Date())
+
+IDBTVER_ad <- NULL
+for(i in IDBTVER){
+  assign(paste0("Ad_",i), Ad(get(i)))
+  IDBTVER_ad <- c(IDBTVER_ad, paste0("Ad_",i))
+}
+
+IDBTVER_Portfolio <- merge.xts(get(IDBTVER_ad[1]),
+                       get(IDBTVER_ad[2]),
+                       join = "inner")
+
+for(i in 3:length(IDBTVER_ad)){
+  IDBTVER_Portfolio <- merge.xts(IDBTVER_Portfolio,
+                         get(IDBTVER_ad[i]),
+                         join = "inner")
+}
+IDBTVER_Returns <- Return.calculate(IDBTVER_Portfolio,
+                                    method="log")[-1,]
 ```
 ```{r, include=FALSE}
 Equity <- c("AMZN", "WM", "NVS", "SAN", "BIMBOA.MX", "C", "NVDA", "SI=F")
