@@ -30,11 +30,13 @@ Para el Excel parametricen el % Costos (4 Tipos de costos, en este momento suman
 
 # Valuación y expectativas de IDBTVER
 ```{r}
-View(IDBTVER2y)
-head(IDBTVER2y)
+IDBTVER <- IDBTVER2y %>%
+  remove_rownames %>% 
+  column_to_rownames(var="Date") %>%
+  as.xts()
 ```
 ```{r}
-plot(IDBTVER2y, 
+plot(IDBTVER, 
      type="l")
 ```
 
