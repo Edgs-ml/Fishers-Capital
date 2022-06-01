@@ -34,20 +34,62 @@ View(IDBTVER2y)
 head(IDBTVER2y)
 ```
 ```{r}
-plot(IDBTVER2y)
+plot(IDB)
 ```
 
 ```{r, include=FALSE}
-IDBTVER <- c("ABB", "ADDYY", "AES", "AA", "AMCR", "AMT", "APMSF", "AZNCF", "AY", "BBVA",
-             "BSAC", "CIB", "BAC", "BNS", "BMWYY", "BIOX", "BNPQF", "BRMSY", "BG",
-             "CRRFY", "CX", "CENCOSHOPP.SN", "CC", "CHYHY", "C", "CNHI", "COA", "COLBUN.SN",
-             "CL", "SGO.VI", "CIG", "ELP", "VESTA.MX", "BSN.F", "ETN", "ENIA", "EGIEY",
-             "FUNO11","FLEX", "FSM", "G", "GF", "GIVN", "GBOOY", "HPE", "HOTG1", "HPQ", 
+IDBTVER <- c("ABB",
+             "ADDYY",
+             "AES",
+             "AA",
+             "AMCR",
+             "AMT",
+             "APAM.AS",
+             "AZN",
+             "AY", 
+             "BBVA",
+             "BSAC", 
+             "CIB", 
+             "BAC", 
+             "BNS", 
+             "BMW.DE", 
+             "BIM.PA",
+             "BNP.PA",
+             "BRML3.SA",
+             "BG", 
+             "CA.PA",
+             "CX",
+             "CENCOSUD.SN",
+             "CC",
+             "CHR.CO",
+             "C",
+             "CNHI",
+             "COA.L",
+             "COLBUN.SN",
+             "CL",
+             "SGO.PA",
+             "CMIG4.SA",
+             "CPLE6.SA",
+             "VESTA.MX",
+             "BN.PA",
+             "ETN",
+             "ENELAM.SN",
+             "EGIE3.SA",
+             "FUNO11.MX",
+             "FLEX",
+             "FSM",
+             ""
+             
+             
+             
+             "CRRFY", "CENCOSHOPP.SN","CHYHY", 
+             "SGO.VI", "CIG", "ELP", , "BSN.F", "ETN", "ENIA", "EGIEY",
+             "FUNO11.MX","FLEX", "FS", "G", "GF", "GIVN", "GBOOY", "HPE", "HOTG", "HPQ", 
              "IBDRY","IDEXY", "INTC", "IBM", "ITUB", "JNJ", "JCI", "JLL", "JPM", "K", "KMB", 
-             "HCMLY","LEA", "LNVGY", "LIN", "FIBRAMQ121", "MPFRY", "MRK", "MKKGY", "MSFT", 
-             "MRVE31","MULT31", "NSRGF", "NKE", "NOKIA1", "NPIFF", "NVS", "ORA", "PARAUCO.SN", 
-             "PIRC1","PG", "RNLSY", "RO1", "006400.KS", "SASY1", "SGSOY", "GCTAY", "SMFKY", 
-             "BB.PA","TAK", "TEF", "TIMB", "UL", "FR.PA", "VWDRY", "VCISY", "VIRB1", "WRTBY", 
+             "HCMLY","LEA", "LNVGY", "LIN", "FIBRAMQ12", "MPFRY", "MRK", "MKKGY", "MSFT", 
+             "MRVE3","MULT3", "NSRGF", "NKE", "NOKIA", "NPIFF", "NVS", "ORA", "PARAUCO.SN", 
+             "PIRC","PG", "RNLSY", "RO", "006400.KS", "SASY", "SGSOY", "GCTAY", "SMFKY", 
+             "BB.PA","TAK", "TEF", "TIMB", "UL", "FR.PA", "VWDRY", "VCISY", "VIRB", "WRTBY", 
              "ZFSVF")
 
 getSymbols(IDBTVER, from=as.Date("2014-03-29"), to=Sys.Date())
@@ -70,6 +112,7 @@ for(i in 3:length(IDBTVER_ad)){
 IDBTVER_Returns <- Return.calculate(IDBTVER_Portfolio,
                                     method="log")[-1,]
 ```
+
 ```{r, include=FALSE}
 Equity <- c("AMZN", "WM", "NVS", "SAN", "BIMBOA.MX", "C", "NVDA", "SI=F")
 getSymbols(Equity, from=as.Date("2017-02-05"), to=Sys.Date())

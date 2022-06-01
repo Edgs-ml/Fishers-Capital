@@ -1,0 +1,74 @@
+---
+title: "Quant Analysis - Bear markets"
+author: "Miguel García Valaguez"
+date: "5/31/2022"
+output: html_document
+---
+
+```{r}
+library(ggplot2)
+library(quantmod)
+library(tidyverse)
+library(dplyr)
+library(timeSeries)
+library(quantmod)
+library(PerformanceAnalytics)
+library(tidyverse)
+library(forecast)
+library(tseries)
+library(visdat)
+library(psych)
+library(ggplot2)
+```
+
+Datos
+```{r}
+SP500 <- ("^GSPC")
+getSymbols(SP500, from = "1927-12-27", to = Sys.Date())
+Ad.Close_SP500 <- `GSPC` [, 6]
+vis_miss(as.data.frame(Ad.Close_SP500))
+#Datos okay
+```
+
+Gráfica, encontrar ATHs y caídas (interesa saber cuánto tardo en recuperarse y se graficará la caída de ATHs)
+```{r}
+ggplot(data = Ad.Close_SP500, aes(x = 1:nrow(Ad.Close_SP500), y = GSPC.Adjusted)) + 
+  geom_area()
+
+list <- findPeaks(x = Ad.Close_SP500, thresh = 0)
+Clean.df <- Ad.Close_SP500[-c(list)]
+
+lista <- as.numeric(Ad.Close_SP500)
+```
+```{python}
+lista1 = [lista]
+listamaximos=[0]
+y=0
+for i in range(len(lista1)):
+  y=len(listamaximos)-1;
+  if lista1[i] > listamaximos[y]:
+    listamaximos.append(lista1[i])
+
+print(listamaximos)
+```
+
+```{r}
+lista1 <- lista
+listamaximos <- 0
+y=0
+for(i in range(len(lista1))):
+  y=len(listamaximos)-1;
+  if lista1[i] > listamaximos[y]:
+    listamaximos.append(lista1[i])
+
+print(listamaximos)
+```
+
+```{r}
+for(i in 3:length(IDBTVER_ad)){
+  IDBTVER_Portfolio <- merge.xts(IDBTVER_Portfolio,
+                         get(IDBTVER_ad[i]),
+                         join = "inner")
+}
+```
+
