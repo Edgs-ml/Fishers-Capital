@@ -1,0 +1,2 @@
+"0","ggplot(data = Ad.Close_SP500, aes(x = 1:nrow(Ad.Close_SP500), y = GSPC.Adjusted)) + "
+"0","  geom_area()"

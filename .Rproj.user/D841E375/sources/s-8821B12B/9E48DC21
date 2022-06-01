@@ -3,24 +3,24 @@
     "path": "~/Documents/GitHub/Fishers-Capital/Scripts/Nota_Estructurada/CPNoted-IDB-IDBTVER_options.Rmd",
     "project_path": "Scripts/Nota_Estructurada/CPNoted-IDB-IDBTVER_options.Rmd",
     "type": "r_markdown",
-    "hash": "0",
+    "hash": "4230118662",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1654031074294.0,
     "source_on_save": false,
     "relative_order": 1,
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "17,8",
-        "scrollLine": "0"
+        "cursorPosition": "44,78",
+        "scrollLine": "38"
     },
     "folds": "",
-    "lastKnownWriteTime": 1654032681,
+    "lastKnownWriteTime": 1654042509,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1654039336531,
+    "last_content_update": 1654042509726,
     "read_only": false,
     "read_only_alternatives": []
 }
