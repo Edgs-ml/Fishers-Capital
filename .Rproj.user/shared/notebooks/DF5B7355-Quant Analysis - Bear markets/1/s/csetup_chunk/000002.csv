@@ -1,5 +1,0 @@
-"0","library(reticulate)"
-"0","use_python(""/usr/local/bin/python"")"
-"2","Error in use_python(""/usr/local/bin/python"") : 
-  Specified version of python '/usr/local/bin/python' does not exist.
-"

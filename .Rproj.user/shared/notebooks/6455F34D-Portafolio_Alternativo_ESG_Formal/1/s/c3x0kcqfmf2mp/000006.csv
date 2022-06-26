@@ -1,4 +1,0 @@
-"0","dta_fram_commod_return_tidy %>%"
-"0","  ggplot(aes(x=fecha, y=cumsum(Rendimiento), col=Activo_comm_ret))+"
-"0","  geom_line()+"
-"0","  facet_wrap(.~Activo_comm_ret, scales = ""free"")"

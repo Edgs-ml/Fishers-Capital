@@ -1,8 +1,0 @@
-"0","SP500 <- (""^GSPC"")"
-"0","getSymbols(SP500, from = ""1927-12-27"", to = Sys.Date())"
-"1","[1]"
-"1"," ""^GSPC"""
-"1","
-"
-"0","Ad.Close_SP500 <- `GSPC` [, 6]"
-"0","vis_miss(as.data.frame(Ad.Close_SP500))"

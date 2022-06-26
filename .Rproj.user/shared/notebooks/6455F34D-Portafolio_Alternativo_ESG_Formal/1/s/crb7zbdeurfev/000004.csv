@@ -1,8 +1,0 @@
-"0","chart.VaRSensitivity(Return_Port_NIG)+"
-"0","  abline(a=NULL, "
-"0","         b=NULL, "
-"0","         h=NULL, "
-"0","         v=0.95, "
-"0","         col=""red"")"
-"1","integer(0)
-"

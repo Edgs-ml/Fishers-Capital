@@ -1,4 +1,0 @@
-"0","dta_frm_Equity_Port_tidy %>%"
-"0","  ggplot(aes(x=fecha, y=Precio_Adj, col=Activos_de_Capital))+"
-"0","  geom_line()+"
-"0","  facet_wrap(.~Activos_de_Capital, scales = ""free"")"

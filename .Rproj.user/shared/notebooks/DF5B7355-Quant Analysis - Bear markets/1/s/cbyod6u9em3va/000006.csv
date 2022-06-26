@@ -1,5 +1,0 @@
-"0",""
-"0","list <- findPeaks(x = Ad.Close_SP500, thresh = 0)"
-"0","Clean.df <- Ad.Close_SP500[-c(list)]"
-"0",""
-"0","lista <- as.numeric(Ad.Close_SP500)"
