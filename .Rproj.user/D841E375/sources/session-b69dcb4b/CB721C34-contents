@@ -21,6 +21,7 @@ for(i in Symbols_4){
 Portfolio_4 <- merge.xts(get(Symbols_4_ad[1]),
                        get(Symbols_4_ad[2]),
                        join = "inner")
+
 for(i in 3:length(Symbols_4_ad)){
   Portfolio_4 <- merge.xts(Portfolio_4,
                          get(Symbols_4_ad[i]),
@@ -37,7 +38,7 @@ Specs_Port4 <- portfolio.spec(Symbols_4)
 
 ##### Add Constraints #####
 Specs_Port4 <- add.constraint(Specs_Port4,
-                              type="weight_sum", min = 0, mx = 1)
+                              type="weight_sum", min_sum=1, max_sum=1)
 Specs_Port4 <- add.constraint(Specs_Port4,type="long_only")
 
 ##### Add Objective #####
@@ -57,8 +58,8 @@ covnig(Returns_4)
 
 
 ##### Optimization #####
-Optimized_Port4 <- optimize.portfolio(Returns_4,
-                                      Specs_Port4, 
+Optimized_Port4 <- optimize.portfolio(Returns_4, 
+                                      Specs_Port4,
                                       momentFUN = covnig,
                                       optimize_method = "random",
                                       trace = TRUE)
